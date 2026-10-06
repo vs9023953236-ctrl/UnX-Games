@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "Unx Games",
+  "short_name": "Unx Games",
+  "description": "Nepal's #1 Game Top-Up & Voucher App",
+  "theme_color": "#F7F7FB",
+  "background_color": "#F7F7FB",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/",
+  "categories": ["games", "shopping", "utilities", "entertainment"],
+  "icons": [
+    {
+      "src": "https://pub-f5b49392d8cb47b0b42800e81d2216c0.r2.dev/App%20Logo/unx.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://pub-f5b49392d8cb47b0b42800e81d2216c0.r2.dev/App%20Logo/unx.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://pub-f5b49392d8cb47b0b42800e81d2216c0.r2.dev/App%20Logo/unx.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

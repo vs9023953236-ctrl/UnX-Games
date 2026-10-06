@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Home Page -->
+  <url>
+    <loc>https://www.intrax.in/</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://pub-f5b49392d8cb47b0b42800e81d2216c0.r2.dev/App%20Logo/unx.png</image:loc>
+      <image:title>Unx Games - Nepal's #1 Game Top-Up &amp; Voucher App</image:title>
+    </image:image>
+  </url>
+
+  <!-- Shop & Games Catalog -->
+  <url>
+    <loc>https://www.intrax.in/?tab=shop</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Free Fire Diamonds Nepal -->
+  <url>
+    <loc>https://www.intrax.in/?product=prod-free-fire</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://pub-f5b49392d8cb47b0b42800e81d2216c0.r2.dev/App%20Logo/unx.png</image:loc>
+      <image:title>Free Fire Diamond Top-Up Nepal via eSewa &amp; Khalti</image:title>
+    </image:image>
+  </url>
+
+  <!-- PUBG Mobile UC Nepal -->
+  <url>
+    <loc>https://www.intrax.in/?product=prod-pubg</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Roblox Robux Nepal -->
+  <url>
+    <loc>https://www.intrax.in/?product=prod-roblox</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Mobile Legends Diamonds Nepal -->
+  <url>
+    <loc>https://www.intrax.in/?product=prod-mlbb</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Customer Support & 24/7 Live Assistance -->
+  <url>
+    <loc>https://www.intrax.in/?tab=support</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Orders Tracking -->
+  <url>
+    <loc>https://www.intrax.in/?tab=orders</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Gamer Wallet Recharge -->
+  <url>
+    <loc>https://www.intrax.in/?tab=wallet</loc>
+    <lastmod>2026-10-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+</urlset>

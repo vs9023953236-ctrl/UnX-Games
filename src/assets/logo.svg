@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <!-- Top-Right Swoosh Gradient (Vivid Coral to Pink-Crimson) -->
+    <linearGradient id="ghn-grad-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF416C" />
+      <stop offset="50%" stop-color="#FF4B2B" />
+      <stop offset="100%" stop-color="#E11D48" />
+    </linearGradient>
+
+    <!-- Left Crescent Gradient (Deep Purple to Magenta) -->
+    <linearGradient id="ghn-grad-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7928CA" />
+      <stop offset="50%" stop-color="#A808D8" />
+      <stop offset="100%" stop-color="#D946EF" />
+    </linearGradient>
+
+    <!-- Center Bar & Bottom Loop Gradient (Magenta to Royal Violet) -->
+    <linearGradient id="ghn-grad-bar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF007A" />
+      <stop offset="40%" stop-color="#D90368" />
+      <stop offset="100%" stop-color="#8B00FF" />
+    </linearGradient>
+
+    <!-- Subtle Drop Filter for Premium Glow -->
+    <filter id="ghn-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#7928CA" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g filter="url(#ghn-shadow)">
+    <!-- 1. Upper-Right Arc -->
+    <path
+      d="M 276 172 C 342 172 388 206 404 252 C 374 252 352 238 334 212 C 314 186 288 178 276 172 Z"
+      fill="url(#ghn-grad-top)"
+    />
+
+    <!-- 2. Left Crescent Arc -->
+    <path
+      d="M 284 214 C 230 234 198 278 198 332 C 198 392 236 438 288 448 C 254 426 242 382 242 332 C 242 278 266 238 284 214 Z"
+      fill="url(#ghn-grad-left)"
+    />
+
+    <!-- 3. G Center Bar & Bottom Tail -->
+    <path
+      d="M 314 294 L 410 294 C 410 324 402 360 380 392 C 354 430 318 456 270 464 C 302 448 322 418 334 382 C 344 350 348 324 348 320 L 314 320 Z"
+      fill="url(#ghn-grad-bar)"
+    />
+  </g>
+</svg>

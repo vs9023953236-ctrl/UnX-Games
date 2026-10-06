@@ -1,0 +1,697 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-primary: #7C3AED;
+  --color-primary-dark: #6D28D9;
+  --color-primary-light: #8B5CF6;
+  --color-secondary: #2563EB;
+  --color-secondary-dark: #1D4ED8;
+  --color-secondary-light: #3B82F6;
+  --color-accent-cyan: #06B6D4;
+  --color-accent-pink: #EC4899;
+  --color-accent-fuchsia: #D946EF;
+  --color-highlight-gold: #F59E0B;
+  --color-highlight-yellow: #EAB308;
+
+  --color-ghn-bg: #F8FAFC;
+  --color-ghn-surface: #FFFFFF;
+  --color-ghn-surface-secondary: #F1F5F9;
+  --color-ghn-surface-elevated: #FFFFFF;
+
+  --color-ghn-admin-bg: #F8FAFC;
+  --color-ghn-admin-surface: #FFFFFF;
+
+  --color-ghn-navy: #0F172A;
+
+  --color-ghn-text: #0F172A;
+  --color-ghn-text-secondary: #334155;
+  --color-ghn-text-muted: #64748B;
+  --color-ghn-text-disabled: #94A3B8;
+  --color-ghn-text-inverse: #FFFFFF;
+
+  --color-ghn-border: #E2E8F0;
+  --color-ghn-border-light: #F1F5F9;
+
+  --color-ghn-success: #10B981;
+  --color-ghn-warning: #F59E0B;
+  --color-ghn-danger: #EF4444;
+  --color-ghn-info: #3B82F6;
+
+  --radius-ghn-sm: 8px;
+  --radius-ghn-md: 12px;
+  --radius-ghn-lg: 16px;
+  --radius-ghn-pill: 999px;
+}
+
+:root {
+  --color-primary: #7C3AED;
+  --color-primary-dark: #6D28D9;
+  --color-primary-light: #8B5CF6;
+  --color-primary-subtle: #F5F3FF;
+  --color-secondary: #2563EB;
+  --color-secondary-dark: #1D4ED8;
+  --color-secondary-light: #3B82F6;
+  --color-secondary-subtle: #EFF6FF;
+  --color-accent-cyan: #06B6D4;
+  --color-accent-pink: #EC4899;
+  --color-accent-fuchsia: #D946EF;
+  --color-highlight-gold: #F59E0B;
+  --color-highlight-yellow: #EAB308;
+
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-secondary: #F1F5F9;
+  --color-surface-elevated: #FFFFFF;
+
+  --color-admin-background: #F8FAFC;
+  --color-admin-surface: #FFFFFF;
+
+  --color-navy: #0F172A;
+
+  --color-text: #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748B;
+  --color-text-disabled: #94A3B8;
+  --color-text-inverse: #FFFFFF;
+
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-glow-purple: 0 0 24px rgba(124, 58, 237, 0.25);
+  --shadow-glow-cyan: 0 0 24px rgba(6, 182, 212, 0.25);
+
+  /* ========================================================================= */
+  /* FINAL RESPONSIVE AUTO-SPACING SYSTEM TOKENS                              */
+  /* Fluid calculations adapt from 360px phones to 1440px+ widescreen displays */
+  /* ========================================================================= */
+  --app-page-px: 8px;
+  --app-page-py: 8px;
+  --app-card-p: 8px;
+  --app-card-p-sm: 8px;
+  --app-section-gap: 8px;
+  --app-component-gap: 8px;
+  --app-grid-gap: 8px;
+  --app-btn-px: clamp(8px, 1.5vw, 12px);
+  --app-btn-py: clamp(5px, 1vw, 7px);
+  --app-input-h: clamp(38px, 5vw, 44px);
+  --app-header-h: clamp(89px, 12vw, 108px);
+  --app-bottom-nav-h: calc(60px + env(safe-area-inset-bottom, 0px));
+  --app-bottom-page-padding: calc(62px + env(safe-area-inset-bottom, 0px));
+  --app-floating-btn-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  --app-admin-bottom-space: calc(70px + env(safe-area-inset-bottom, 0px));
+  --app-admin-floating-btn-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --app-bottom-page-padding: calc(62px + env(safe-area-inset-bottom, 0px));
+    --app-floating-btn-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    --app-admin-bottom-space: 8px;
+    --app-admin-floating-btn-bottom: 12px;
+  }
+}
+
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+
+  html {
+    overflow: hidden;
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif !important;
+    touch-action: pan-x pan-y;
+    overflow: hidden;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Force standard crisp sans-serif font rendering and override mobile theme fonts */
+  button, input, select, textarea, div, span, p, h1, h2, h3, h4, h5, h6, a, label {
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Universal High Definition (FHD / Retina) Crisp Renderers */
+  svg {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    transform: translateZ(0);
+  }
+
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  button {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+
+  input, select, textarea {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* FHD Ultra Sharp Vector & Rendering Classes */
+.fhd-crisp {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.fhd-vector {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+.fhd-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ========================================================================= */
+/* UNIVERSAL COMPLETE SCROLLBAR SUPPRESSION (EVERYWHERE IN APP & ADMIN)      */
+/* Completely removes scrollbars, scrollbar tracks, lines, thumbs & borders  */
+/* ========================================================================= */
+
+/* 1. Global WebKit Reset (Chrome, Android Chrome, Safari, Edge, WebKit) */
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* 2. Global Standards (Firefox & Edge) */
+html,
+body,
+#root,
+*,
+*::before,
+*::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* 3. Class-specific overrides for custom-scrollbar, scrollbar-thin, overflow containers */
+.custom-scrollbar,
+.scrollbar-thin,
+.scrollbar-none,
+.hide-scrollbar,
+.no-scrollbar,
+.overflow-x-auto,
+.overflow-y-auto,
+.overflow-auto,
+[class*="overflow-"] {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar,
+.scrollbar-thin::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+[class*="overflow-"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track,
+.scrollbar-thin::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.scrollbar-thin::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  display: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Safe area inset support */
+.safe-area-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* High Performance 360-degree Rotating Loader Animations */
+@keyframes spin-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-glow {
+  animation: spin-glow 1.5s linear infinite !important;
+  will-change: transform;
+  transform-origin: center;
+}
+
+.animate-spin-slow {
+  animation: spin-glow 3s linear infinite !important;
+  will-change: transform;
+  transform-origin: center;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 2s linear infinite !important;
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* 120 FPS ProMotion & High-Refresh Gaming Engine Optimization (8.33ms Render Budget) */
+@media (prefers-reduced-motion: no-preference) {
+  html, body {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.fps-120-gpu {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Hardware accelerated layer promotion for 120Hz smooth scrolling */
+main, .animate-live-ticker, header, nav {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Live Video Player Style Marquee Ticker (Hardware Accelerated & Mobile Safe) */
+@keyframes ticker-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-live-ticker {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  animation: ticker-scroll 32s linear infinite !important;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Pause on hover only on desktop pointer devices with fine cursors - NEVER pause on mobile touch screens */
+@media (hover: hover) and (pointer: fine) {
+  .animate-live-ticker:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes live-pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.3);
+  }
+}
+
+.animate-live-dot {
+  animation: live-pulse-dot 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes eq-bar {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+
+.animate-eq-1 { animation: eq-bar 0.8s ease-in-out infinite; }
+.animate-eq-2 { animation: eq-bar 0.6s ease-in-out infinite 0.2s; }
+.animate-eq-3 { animation: eq-bar 0.9s ease-in-out infinite 0.4s; }
+
+/* ========================================================================= */
+/* AUTO-SPACING & GLOBAL COMPACT LAYOUT SYSTEM                               */
+/* ========================================================================= */
+
+.app-page-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(8px, 1.5vw, 16px);
+  padding-right: clamp(8px, 1.5vw, 16px);
+  padding-top: var(--app-page-py);
+  padding-bottom: var(--app-page-py);
+}
+
+.app-page-compact {
+  width: 100%;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(8px, 1.25vw, 14px);
+  padding-right: clamp(8px, 1.25vw, 14px);
+  padding-top: var(--app-page-py);
+  padding-bottom: var(--app-page-py);
+}
+
+.app-card-fluid {
+  padding: var(--app-card-p);
+}
+
+.app-card-fluid-sm {
+  padding: var(--app-card-p-sm);
+}
+
+.app-section-gap {
+  gap: var(--app-section-gap);
+}
+
+.app-component-gap {
+  gap: var(--app-component-gap);
+}
+
+.app-btn-fluid {
+  padding-left: var(--app-btn-px);
+  padding-right: var(--app-btn-px);
+  padding-top: var(--app-btn-py);
+  padding-bottom: var(--app-btn-py);
+}
+
+.app-input-fluid {
+  min-height: var(--app-input-h);
+  padding-left: var(--app-btn-px);
+  padding-right: var(--app-btn-px);
+}
+
+.app-user-content-pb {
+  padding-bottom: var(--app-bottom-page-padding);
+}
+
+.app-admin-content-pb {
+  padding-bottom: var(--app-admin-bottom-space);
+}
+
+.safe-area-top {
+  padding-top: max(0.25rem, env(safe-area-inset-top, 0px));
+}
+
+.safe-area-bottom {
+  padding-bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
+}
+
+.page-content {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: 8px;
+  box-sizing: border-box;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  /* Hide all app chrome, navbars, banners, modals backdrop, footers during print */
+  nav, footer, header, .no-print, [role="dialog"] > div:not(#printable-order-receipt) {
+    display: none !important;
+  }
+
+  #printable-order-receipt-root {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    background: white !important;
+    color: black !important;
+    z-index: 999999 !important;
+  }
+}
+
+/* ========================================================================= */
+/* NATIVE MOBILE-APP UI & ANIMATION OPTIMIZATIONS                            */
+/* ========================================================================= */
+
+/* Skeleton Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.4) 20%,
+    rgba(255, 255, 255, 0.7) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.8s infinite;
+  content: '';
+}
+
+/* Keyboard navigation is visible without changing the visual language of the app. */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid rgba(124, 58, 237, 0.5);
+  outline-offset: 3px;
+}
+
+.app-skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 50%;
+  transform: translate(-50%, -160%);
+  border-radius: 0.75rem;
+  background: #0f172a;
+  padding: 0.7rem 1rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+  transition: transform 0.16s ease;
+}
+
+.app-skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+/* Native Touch Target Rule (Minimum 44-48px) */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.touch-target-sm {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mobile-First Active Feedback */
+.btn-press {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+  will-change: transform;
+}
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+.card-press {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+  will-change: transform;
+}
+.card-press:active {
+  transform: scale(0.98);
+}
+
+/* GPU Accelerated Transitions */
+.gpu-layer {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Button Animations */
+@keyframes btn-shimmer {
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
+}
+
+@keyframes btn-glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.99); }
+  50% { opacity: 0.9; transform: scale(1.02); }
+}
+
+@keyframes btn-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-btn-shimmer {
+  animation: btn-shimmer 2.8s infinite ease-in-out;
+}
+
+.animate-btn-glow {
+  animation: btn-glow-pulse 2.2s infinite ease-in-out;
+}
+
+.animate-btn-gradient {
+  background-size: 200% 200%;
+  animation: btn-gradient-shift 4s infinite ease;
+}
+
+/* Edge-to-Edge Universal Viewport & Safe Area Utility Classes */
+.edge-to-edge-root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  width: 100dvw;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.py-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+

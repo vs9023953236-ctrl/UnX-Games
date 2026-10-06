@@ -1,0 +1,17 @@
+node_modules/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+dev-dist/
+.vercel/
+.netlify/
+dist/
+build/
+.wrangler/
+.wrangler-dist/
+server.js
+server.cjs
+bun.lock
+bun.lockb

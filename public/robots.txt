@@ -1,0 +1,19 @@
+# Robots.txt for Unx Games (https://www.intrax.in)
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /support
+Allow: /orders
+Allow: /wallet
+Allow: /manifest.json
+Allow: /sitemap.xml
+
+# Protect private admin routes & internal APIs
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/
+Disallow: /api/*
+
+# Host & Sitemaps
+Host: https://www.intrax.in
+Sitemap: https://www.intrax.in/sitemap.xml
