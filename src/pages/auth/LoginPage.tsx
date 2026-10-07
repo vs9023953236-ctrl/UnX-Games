@@ -415,7 +415,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ hideLayout = false }) => {
                 }}
                 placeholder="you@email.com or 98XXXXXXXX"
                 autoComplete="username"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
               />
             </div>
           </div>
@@ -427,13 +427,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ hideLayout = false }) => {
               <button
                 type="button"
                 onClick={() => setCurrentTab('forgot_password')}
-                className="text-[11px] sm:text-xs font-bold text-violet-600 hover:text-violet-700 transition-colors cursor-pointer"
+                className="text-[11px] sm:text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 Forgot Password?
               </button>
             </div>
             <div className="relative flex items-center group">
-              <div className="absolute left-4 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+              <div className="absolute left-4 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                 <Lock size={16} />
               </div>
               <input
@@ -446,7 +446,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ hideLayout = false }) => {
                 }}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-12 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-12 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
               />
               <button
                 type="button"

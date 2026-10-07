@@ -781,6 +781,7 @@ export const HomePage: React.FC = () => {
             popularProducts.map((product, idx) => (
               <div
                 key={`popular-${product.id || idx}-${idx}`}
+                data-product-id={product.id}
                 onClick={() => handleProductClick(product.id)}
                 className="w-[calc((100%-16px)/3)] sm:w-[calc((100%-24px)/3)] md:w-[calc((100%-32px)/3)] shrink-0 snap-start bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:border-violet-500/40 transition-all group cursor-pointer flex flex-col active:scale-[0.98]"
               >
@@ -900,6 +901,7 @@ export const HomePage: React.FC = () => {
             filteredProducts.map((product, idx) => (
               <div
                 key={`all-prod-${product.id || idx}-${idx}`}
+                data-product-id={product.id}
                 onClick={() => handleProductClick(product.id)}
                 className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-violet-500/40 transition-all group cursor-pointer flex flex-col active:scale-[0.98]"
               >

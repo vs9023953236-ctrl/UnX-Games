@@ -280,7 +280,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="How fast was the diamond/UC top-up? How was the eSewa / Khalti QR payment?"
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-violet-600 focus:bg-white rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-hidden transition-all resize-none"
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl p-3 text-xs font-medium text-slate-900 outline-none focus:outline-none focus:ring-0 transition-all resize-none"
                 />
               </div>
 

@@ -25,6 +25,7 @@ import { api, fetchApi } from '../services/api';
 import { updateDocumentFavicon, OFFICIAL_LOGO_DATA_URI } from '../utils/branding';
 import { realtimeSync } from '../lib/realtimeSync';
 import { getSafeGameImage, DEFAULT_FALLBACK_IMAGE } from '../utils/imageFallback';
+import { checkAndTriggerPriceAlerts } from '../utils/priceAlerts';
 
 const DEFAULT_PAYMENT_SETTINGS: PaymentSettings = {
   esewaEnabled: true,
@@ -1207,6 +1208,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Primary Backend Data Loader & Synchronizer (Single Source of Truth)
   useEffect(() => {
+    if (products && products.length > 0) {
+      checkAndTriggerPriceAlerts(products, (newNotif) => {
+        setNotifications((prev) => [newNotif, ...prev]);
+        showToast('info', '🔥 Price Drop Alert!', newNotif.title);
+      });
+    }
+  }, [products]);
+
+  useEffect(() => {
     // 1. Authoritative Products Fetcher & Synchronizer
     const loadProducts = (attempt = 1) => {
       api.products.getAll().then(res => {
@@ -1229,6 +1239,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       });
     };
     loadProducts();
+
+    // Price Drop Alerts Checker Effect
+    if (typeof window !== 'undefined') {
+      const handlePriceCheck = () => {
+        if (products.length > 0) {
+          checkAndTriggerPriceAlerts(products, (newNotif) => {
+            setNotifications((prev) => [newNotif, ...prev]);
+            showToast('info', '🔥 Price Drop Alert!', newNotif.title);
+          });
+        }
+      };
+      window.addEventListener('unx_price_alerts_updated', handlePriceCheck);
+      return () => window.removeEventListener('unx_price_alerts_updated', handlePriceCheck);
+    }
 
     // 2. Settings fetch
     const fetchSettings = () => {
@@ -1345,14 +1369,16 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }, 10000);
 
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
         fetchSettings();
         fetchPaymentSettings();
         fetchBanners();
         loadProducts(1);
       }
     };
-    window.addEventListener('visibilitychange', handleVisibilityChange);
+    if (typeof window !== 'undefined') {
+      (window as any).addEventListener?.('visibilitychange', handleVisibilityChange);
+    }
 
     return () => {
       unsubProduct();
@@ -1363,7 +1389,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       unsubPayment();
       unsubDbSync();
       clearInterval(intervalId);
-      window.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (typeof window !== 'undefined') {
+        (window as any).removeEventListener?.('visibilitychange', handleVisibilityChange);
+      }
     };
   }, []);
 

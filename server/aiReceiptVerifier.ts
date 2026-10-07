@@ -118,7 +118,7 @@ OUTPUT VALID JSON ONLY:
       : [{ text: `Analyze payment receipt with URL ${input.imageUrl}. ${promptText}` }];
 
     let response: any = null;
-    const candidateModels = ['gemini-3.1-flash-lite', 'gemini-3.8-flash'];
+    const candidateModels = ['gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest', 'gemini-3.8-flash'];
     for (const modelName of candidateModels) {
       try {
         response = await ai.models.generateContent({

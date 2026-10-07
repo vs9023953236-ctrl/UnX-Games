@@ -104,8 +104,8 @@ export const OtpCodeInput: React.FC<OtpCodeInputProps> = ({
             onPaste={handlePaste}
             className={`h-10 w-9 min-[360px]:h-11 min-[360px]:w-10 sm:h-14 sm:w-12 text-center text-xl sm:text-2xl font-black rounded-xl sm:rounded-[16px] border-2 transition-all duration-200 outline-none select-none font-mono ${
               isFilled
-                ? 'border-violet-500 bg-violet-50 text-violet-900 shadow-sm shadow-violet-500/20 scale-[1.03]'
-                : 'border-transparent bg-slate-100/60 text-slate-900 focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10'
+                ? 'border-slate-800 bg-slate-100 text-slate-900 shadow-sm scale-[1.03]'
+                : 'border-slate-200 bg-slate-100/60 text-slate-900 focus:border-slate-400 focus:bg-white focus:ring-0'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-text'}`}
           />
         );

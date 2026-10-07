@@ -868,7 +868,7 @@ export const OrderDetailsPage: React.FC = () => {
                 value={searchCodeInput}
                 onChange={(e) => setSearchCodeInput(e.target.value)}
                 placeholder="Enter GHN Order ID or Player UID..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono focus:border-violet-600 focus:bg-white focus:outline-hidden"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
               />
               <button
                 type="submit"
@@ -1932,7 +1932,7 @@ export const OrderDetailsPage: React.FC = () => {
                   <select
                     value={cancelReason}
                     onChange={(e) => setCancelReason(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-medium focus:outline-hidden focus:border-violet-600 cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-medium outline-none focus:outline-none focus:border-slate-400 cursor-pointer"
                   >
                     <option value="Wrong Player ID / UID">Wrong Player ID / UID entered</option>
                     <option value="Ordered by mistake">Ordered by mistake</option>
@@ -1952,13 +1952,13 @@ export const OrderDetailsPage: React.FC = () => {
                     onChange={(e) => setCancelNote(e.target.value)}
                     rows={2}
                     placeholder="Provide additional details..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 font-medium focus:outline-hidden focus:border-violet-600 resize-none"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 font-medium outline-none focus:outline-none focus:border-slate-400 resize-none"
                   />
                 </div>
 
-                <div className="p-3.5 bg-violet-50/70 rounded-2xl border border-violet-100 space-y-2.5">
-                  <div className="flex items-center gap-1.5 text-violet-900">
-                    <Wallet size={14} className="text-violet-600" />
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
+                  <div className="flex items-center gap-1.5 text-slate-800">
+                    <Wallet size={14} className="text-slate-600" />
                     <span className="text-[11px] font-black uppercase tracking-wider">
                       Refund Receiving Wallet
                     </span>
@@ -1970,7 +1970,7 @@ export const OrderDetailsPage: React.FC = () => {
                       <select
                         value={refundMethod}
                         onChange={(e) => setRefundMethod(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-medium focus:outline-hidden focus:border-violet-600 cursor-pointer"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-medium outline-none focus:outline-none focus:border-slate-400 cursor-pointer"
                       >
                         <option value="eSewa">eSewa</option>
                         <option value="Khalti">Khalti</option>
@@ -1987,7 +1987,7 @@ export const OrderDetailsPage: React.FC = () => {
                         value={refundAccountNumber}
                         onChange={(e) => setRefundAccountNumber(e.target.value)}
                         placeholder="e.g. 98XXXXXXXX"
-                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-mono font-medium focus:outline-hidden focus:border-violet-600"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-mono font-medium outline-none focus:outline-none focus:border-slate-400"
                       />
                     </div>
                   </div>
@@ -2000,7 +2000,7 @@ export const OrderDetailsPage: React.FC = () => {
                       value={refundAccountName}
                       onChange={(e) => setRefundAccountName(e.target.value)}
                       placeholder="Name on eSewa / Bank account"
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-medium focus:outline-hidden focus:border-violet-600"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-medium outline-none focus:outline-none focus:border-slate-400"
                     />
                   </div>
                 </div>

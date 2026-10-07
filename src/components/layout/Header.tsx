@@ -170,7 +170,7 @@ export const Header: React.FC = () => {
               onFocus={() => setIsSearchFocused(true)}
               placeholder="Search games, diamonds, UC..."
               aria-label="Search games and top-up packages"
-              className="w-full bg-white/95 hover:bg-white focus:bg-white border border-slate-200/90 focus:border-violet-600 rounded-2xl pl-10 sm:pl-11.5 pr-10 text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:truncate truncate focus:outline-hidden focus:ring-2 focus:ring-violet-600/20 transition-all shadow-xs h-[46px] sm:h-[50px] fhd-crisp [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+              className="w-full bg-white/95 hover:bg-white focus:bg-white border border-slate-200/90 focus:border-slate-400 rounded-2xl pl-10 sm:pl-11.5 pr-10 text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:truncate truncate outline-none focus:outline-none focus:ring-0 transition-all shadow-xs h-[46px] sm:h-[50px] fhd-crisp [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
             />
 
             {!searchQuery && (

@@ -443,7 +443,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
             <div className="flex flex-col gap-0.5">
               <label htmlFor="register-name" className="text-xs font-bold text-slate-700 ml-1">Full Name</label>
               <div className="relative flex items-center group">
-                <div className="absolute left-3 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+                <div className="absolute left-3 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                   <User size={14} />
                 </div>
                 <input
@@ -456,7 +456,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
                     if (errorMessage) setErrorMessage(null);
                   }}
                   placeholder="Full name"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8.5 pr-2.5 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/10"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8.5 pr-2.5 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
                 />
               </div>
             </div>
@@ -468,7 +468,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
                 <span className="text-[9px] font-bold text-slate-400">Opt</span>
               </div>
               <div className="relative flex items-center group">
-                <div className="absolute left-3 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+                <div className="absolute left-3 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                   <Phone size={14} />
                 </div>
                 <input
@@ -478,7 +478,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
                   autoComplete="tel"
                   onChange={(e) => handlePhoneChange(e.target.value)}
                   placeholder="98XXXXXXXX"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8.5 pr-2.5 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/10"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8.5 pr-2.5 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
                 />
               </div>
             </div>
@@ -488,7 +488,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
           <div className="flex flex-col gap-0.5">
             <label htmlFor="register-email" className="text-xs font-bold text-slate-700 ml-1">Email Address</label>
             <div className="relative flex items-center group">
-              <div className="absolute left-3.5 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+              <div className="absolute left-3.5 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                 <Mail size={14} />
               </div>
               <input
@@ -501,7 +501,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
                   if (errorMessage) setErrorMessage(null);
                 }}
                 placeholder="you@email.com"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/10"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
               />
             </div>
           </div>
@@ -517,7 +517,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
               )}
             </div>
             <div className="relative flex items-center group">
-              <div className="absolute left-3.5 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+              <div className="absolute left-3.5 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                 <Lock size={14} />
               </div>
               <input
@@ -531,7 +531,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ hideLayout = false }
                   if (errorMessage) setErrorMessage(null);
                 }}
                 placeholder="Minimum 6 characters"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-10 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/10"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-10 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
               />
               <button
                 type="button"

@@ -688,7 +688,7 @@ export const AdminControlCenterTab: React.FC = () => {
                 </p>
               </div>
               <div className="pt-2 border-t border-purple-500/20 flex items-center justify-between text-[11px] text-purple-300 font-mono">
-                <span>Model: gemini-3.8-flash</span>
+                <span>Model: gemini-3.5-flash</span>
                 <span>Latency: ~350ms</span>
               </div>
             </div>

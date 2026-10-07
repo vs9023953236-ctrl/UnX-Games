@@ -145,35 +145,152 @@ export function getBlurPlaceholder(url?: string, context?: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg.replace(/\s+/g, ' ').trim())}`;
 }
 
+// Map of DOM elements to target preload URLs & callbacks for shared IntersectionObserver
+const lazyPreloadMap = new WeakMap<Element, { urls: string[]; priority: 'high' | 'low'; onLoaded?: () => void }>();
+
+// Centralized high-efficiency shared IntersectionObserver instance
+let sharedLazyObserver: IntersectionObserver | null = null;
+
+function getSharedLazyObserver(): IntersectionObserver | null {
+  if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+    return null;
+  }
+
+  if (!sharedLazyObserver) {
+    try {
+      sharedLazyObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const target = entry.target;
+              const config = lazyPreloadMap.get(target);
+              if (config) {
+                config.urls.forEach((url) => {
+                  preloadImage(url, config.priority).then((success) => {
+                    if (success && config.onLoaded) {
+                      config.onLoaded();
+                    }
+                  });
+                });
+                lazyPreloadMap.delete(target);
+              }
+              observer.unobserve(target);
+            }
+          });
+        },
+        {
+          rootMargin: '250px 0px', // Trigger preloading 250px before entering viewport for seamless instant render
+          threshold: 0.01,
+        }
+      );
+    } catch {
+      sharedLazyObserver = null;
+    }
+  }
+
+  return sharedLazyObserver;
+}
+
 /**
- * Pre-warms product catalogue images during idle moments.
+ * Registers an element to lazily preload image(s) when approaching viewport.
+ * If IntersectionObserver is not supported or image is already cached, loads immediately.
+ */
+export function registerLazyPreloadTarget(
+  element: Element | null,
+  urlOrUrls: string | string[],
+  options: { priority?: 'high' | 'low'; onLoaded?: () => void } = {}
+): () => void {
+  if (!element || typeof window === 'undefined') return () => {};
+
+  const urls = (Array.isArray(urlOrUrls) ? urlOrUrls : [urlOrUrls]).filter(Boolean);
+  if (urls.length === 0) return () => {};
+
+  // If all URLs are already preloaded in memory, invoke callback immediately and skip observing
+  const allLoaded = urls.every((u) => preloadedCache.has(u));
+  if (allLoaded) {
+    if (options.onLoaded) options.onLoaded();
+    return () => {};
+  }
+
+  const observer = getSharedLazyObserver();
+  if (!observer) {
+    // Fallback: preload via idle callback if no observer support
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => preloadImages(urls, options.priority || 'low'), { timeout: 2000 });
+    } else {
+      setTimeout(() => preloadImages(urls, options.priority || 'low'), 300);
+    }
+    return () => {};
+  }
+
+  lazyPreloadMap.set(element, {
+    urls,
+    priority: options.priority || 'low',
+    onLoaded: options.onLoaded,
+  });
+
+  observer.observe(element);
+
+  return () => {
+    observer.unobserve(element);
+    lazyPreloadMap.delete(element);
+  };
+}
+
+/**
+ * Pre-warms non-critical product catalogue images using lazy Intersection Observation.
+ * Eagerly preloads only the top critical slots (default: 4) and attaches intersection observers
+ * for remaining items to minimize initial network payload.
  */
 export function preloadProductImages(
   products: Array<{ image?: string; id?: string; name?: string }>,
-  limit = 12
+  eagerLimit = 4
 ): void {
   if (typeof window === 'undefined' || !Array.isArray(products)) return;
 
-  const urls = products
-    .slice(0, limit)
-    .map((p) => p.image)
-    .filter((img): img is string => typeof img === 'string' && img.length > 0 && !preloadedCache.has(img));
+  const validProducts = products.filter(
+    (p) => typeof p.image === 'string' && p.image.length > 0 && !preloadedCache.has(p.image)
+  );
 
-  if (urls.length === 0) return;
+  if (validProducts.length === 0) return;
 
-  const warmUp = () => {
-    preloadImages(urls, 'low');
-  };
+  // 1. Eagerly preload top critical visible items during idle time
+  const criticalUrls = validProducts.slice(0, eagerLimit).map((p) => p.image as string);
+  if (criticalUrls.length > 0) {
+    const warmUpCritical = () => {
+      preloadImages(criticalUrls, 'high');
+    };
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(warmUpCritical, { timeout: 1500 });
+    } else {
+      setTimeout(warmUpCritical, 100);
+    }
+  }
 
-  if ('requestIdleCallback' in window) {
-    (window as any).requestIdleCallback(warmUp, { timeout: 1500 });
-  } else {
-    setTimeout(warmUp, 150);
+  // 2. Remaining non-critical products are registered for viewport-based lazy loading
+  // to avoid consuming mobile data or stalling the initial page load
+  const nonCriticalProducts = validProducts.slice(eagerLimit);
+  if (nonCriticalProducts.length > 0 && typeof document !== 'undefined') {
+    const queueNonCritical = () => {
+      nonCriticalProducts.forEach((p) => {
+        if (!p.id || !p.image) return;
+        const domEl = document.querySelector(`[data-product-id="${p.id}"]`) || document.querySelector(`#product-${p.id}`);
+        if (domEl) {
+          registerLazyPreloadTarget(domEl, p.image, { priority: 'low' });
+        }
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(queueNonCritical, { timeout: 3000 });
+    } else {
+      setTimeout(queueNonCritical, 500);
+    }
   }
 }
 
 /**
- * Creates a shared lazy intersection observer.
+ * Creates a dedicated lazy intersection observer for dynamic DOM components.
  */
 export function createLazyImageObserver(
   onIntersect: (target: Element) => void,
@@ -204,7 +321,7 @@ export function createLazyImageObserver(
 }
 
 /**
- * Bootstraps critical app images on startup.
+ * Bootstraps critical app branding images on startup.
  */
 export function initImagePreloader(): void {
   if (typeof window === 'undefined') return;

@@ -1,33 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { isImagePreloaded, getBlurPlaceholder, preloadImage } from '../../utils/imagePreloader';
+import { isImagePreloaded, getBlurPlaceholder, preloadImage, registerLazyPreloadTarget } from '../../utils/imagePreloader';
+import { getOptimizedImageSources, optimizeImageUrl } from '../../utils/imageTransformer';
 
-/**
- * Optimizes external image URLs (e.g. Unsplash, Cloudinary) to request modern formats (WebP/AVIF)
- * and properly-sized dimensions to drastically reduce network payload.
- */
-export function optimizeImageUrl(url: string, targetWidth?: number): string {
-  if (!url || typeof url !== 'string') return url;
-
-  // Unsplash dynamic resizing & compression
-  if (url.includes('images.unsplash.com')) {
-    try {
-      const parsed = new URL(url);
-      parsed.searchParams.set('auto', 'format');
-      parsed.searchParams.set('fit', 'crop');
-      parsed.searchParams.set('q', '75');
-      if (targetWidth) {
-        parsed.searchParams.set('w', String(targetWidth));
-      } else if (!parsed.searchParams.has('w')) {
-        parsed.searchParams.set('w', '600');
-      }
-      return parsed.toString();
-    } catch {
-      return url;
-    }
-  }
-
-  return url;
-}
+export { optimizeImageUrl };
 
 export interface AppImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -59,16 +34,16 @@ export const AppImage: React.FC<AppImageProps> = ({
   category,
   ...props
 }) => {
-  const optimizedSrc = useMemo(() => optimizeImageUrl(src, targetWidth), [src, targetWidth]);
+  const sources = useMemo(() => getOptimizedImageSources(src, targetWidth), [src, targetWidth]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   // Instant state if already preloaded in memory
-  const alreadyPreloaded = isImagePreloaded(optimizedSrc);
+  const alreadyPreloaded = isImagePreloaded(sources.preferredUrl) || isImagePreloaded(src);
 
   const [shouldLoad, setShouldLoad] = useState<boolean>(() => priority || alreadyPreloaded);
   const [loaded, setLoaded] = useState<boolean>(() => alreadyPreloaded);
-  const [currentSrc, setCurrentSrc] = useState<string>(optimizedSrc);
+  const [currentSrc, setCurrentSrc] = useState<string>(sources.preferredUrl);
   const [hasError, setHasError] = useState<boolean>(false);
 
   // Generate lightweight blur placeholder data URI
@@ -79,11 +54,11 @@ export const AppImage: React.FC<AppImageProps> = ({
 
   // Synchronize when src changes
   useEffect(() => {
-    const nextSrc = optimizeImageUrl(src, targetWidth);
-    setCurrentSrc(nextSrc);
+    const nextSources = getOptimizedImageSources(src, targetWidth);
+    setCurrentSrc(nextSources.preferredUrl);
     setHasError(false);
 
-    if (isImagePreloaded(nextSrc)) {
+    if (isImagePreloaded(nextSources.preferredUrl) || isImagePreloaded(src)) {
       setLoaded(true);
       setShouldLoad(true);
     } else {
@@ -94,38 +69,22 @@ export const AppImage: React.FC<AppImageProps> = ({
     }
   }, [src, targetWidth, priority]);
 
-  // IntersectionObserver for lazy viewport detection
+  // Shared IntersectionObserver for lazy viewport detection & preloading
   useEffect(() => {
     if (shouldLoad || priority) return;
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setShouldLoad(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShouldLoad(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        rootMargin: '200px 0px',
-        threshold: 0.01,
-      }
-    );
 
     const el = containerRef.current;
-    if (el) {
-      observer.observe(el);
-    }
+    if (!el) return;
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [shouldLoad, priority]);
+    const unregister = registerLazyPreloadTarget(el, [sources.avifUrl, sources.webpUrl, currentSrc], {
+      priority: 'low',
+      onLoaded: () => {
+        setShouldLoad(true);
+      },
+    });
+
+    return unregister;
+  }, [shouldLoad, priority, currentSrc, sources]);
 
   const handleError = () => {
     if (!hasError && fallbackSrc && currentSrc !== fallbackSrc) {
@@ -169,30 +128,44 @@ export const AppImage: React.FC<AppImageProps> = ({
           <span className="text-[10px] mt-1 font-bold opacity-75 truncate max-w-full px-1">{alt}</span>
         </div>
       ) : shouldLoad ? (
-        <img
-          ref={imgRef}
-          src={currentSrc}
-          alt={alt}
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
-          decoding="async"
-          onLoad={() => {
-            setLoaded(true);
-            preloadImage(currentSrc);
-          }}
-          onError={handleError}
-          className={`w-full h-full object-cover transition-all duration-500 ease-out relative z-[2] ${
-            loaded ? 'opacity-100 filter-none scale-100' : 'opacity-0 filter blur-[4px] scale-[1.03]'
-          } ${className}`}
-          style={{
-            transform: 'translate3d(0, 0, 0)',
-            backfaceVisibility: 'hidden',
-            imageRendering: '-webkit-optimize-contrast' as any,
-            willChange: 'opacity, transform, filter',
-            ...props.style,
-          }}
-          {...props}
-        />
+        <picture className="w-full h-full block">
+          {sources.avifUrl && (
+            <source
+              type="image/avif"
+              srcSet={sources.avifSrcSet || sources.avifUrl}
+            />
+          )}
+          {sources.webpUrl && (
+            <source
+              type="image/webp"
+              srcSet={sources.webpSrcSet || sources.webpUrl}
+            />
+          )}
+          <img
+            ref={imgRef}
+            src={currentSrc}
+            alt={alt}
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
+            onLoad={() => {
+              setLoaded(true);
+              preloadImage(currentSrc);
+            }}
+            onError={handleError}
+            className={`w-full h-full object-cover transition-all duration-500 ease-out relative z-[2] ${
+              loaded ? 'opacity-100 filter-none scale-100' : 'opacity-0 filter blur-[4px] scale-[1.03]'
+            } ${className}`}
+            style={{
+              transform: 'translate3d(0, 0, 0)',
+              backfaceVisibility: 'hidden',
+              imageRendering: '-webkit-optimize-contrast' as any,
+              willChange: 'opacity, transform, filter',
+              ...props.style,
+            }}
+            {...props}
+          />
+        </picture>
       ) : null}
     </div>
   );

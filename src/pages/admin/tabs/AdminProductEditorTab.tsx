@@ -336,13 +336,15 @@ export const AdminProductEditorTab: React.FC = () => {
         const disc = p.discount !== undefined
           ? Number(p.discount)
           : (oPrice && oPrice > pPrice ? Math.round(((oPrice - pPrice) / oPrice) * 100) : undefined);
+        const amtVal = p.amountValue ? p.amountValue.trim() : p.name.trim();
         return {
           id: p.id,
           name: p.name.trim(),
           price: pPrice,
           originalPrice: oPrice,
           discount: disc,
-          amountValue: p.amountValue ? p.amountValue.trim() : undefined,
+          amount: amtVal,
+          amountValue: amtVal,
           popular: Boolean(p.popular),
           active: p.active !== false,
           displayOrder: idx,

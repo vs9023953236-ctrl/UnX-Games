@@ -146,7 +146,7 @@ export const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({ hideLayout
                 if (errorMessage) setErrorMessage(null);
               }}
               placeholder="At least 6 characters"
-              className="w-full pl-11 pr-12 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-transparent text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all outline-none"
+              className="w-full pl-11 pr-12 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-slate-400 focus:ring-0 transition-all outline-none"
               autoFocus
             />
             <button
@@ -179,7 +179,7 @@ export const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({ hideLayout
         <div className="flex flex-col gap-0.5">
           <label htmlFor="reset-confirm-password" className="text-xs sm:text-sm font-bold text-slate-700 ml-1 mb-0.5">Confirm New Password</label>
           <div className="relative flex items-center group">
-            <div className="absolute left-4 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+            <div className="absolute left-4 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
               <Lock size={16} />
             </div>
             <input
@@ -192,7 +192,7 @@ export const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({ hideLayout
                 if (errorMessage) setErrorMessage(null);
               }}
               placeholder="Re-enter your password"
-              className="w-full pl-11 pr-12 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-transparent text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all outline-none"
+              className="w-full pl-11 pr-12 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-slate-400 focus:ring-0 transition-all outline-none"
             />
             <button
               type="button"

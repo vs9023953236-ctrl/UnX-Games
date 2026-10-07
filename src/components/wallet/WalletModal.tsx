@@ -472,7 +472,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter deposit amount in NPR"
                     required
-                    className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 focus:border-violet-600 focus:ring-2 focus:ring-violet-100 text-xs font-black text-slate-900 bg-white"
+                    className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 focus:border-slate-400 outline-none focus:outline-none focus:ring-0 text-xs font-black text-slate-900 bg-white"
                   />
                 </div>
               </div>
@@ -481,10 +481,10 @@ export const WalletModal: React.FC<WalletModalProps> = ({
               <div className="space-y-1.5 pt-0.5">
                 <div className="flex items-center justify-between px-0.5">
                   <label className="text-[11px] font-black text-slate-800 uppercase tracking-wider flex items-center gap-1">
-                    <span className="w-4 h-4 rounded-full bg-violet-600 text-white flex items-center justify-center text-[9px] font-black">3</span>
+                    <span className="w-4 h-4 rounded-full bg-slate-800 text-white flex items-center justify-center text-[9px] font-black">3</span>
                     <span>Transaction ID</span>
                   </label>
-                  <span className="text-[10px] font-mono font-bold text-violet-600">eSewa/Khalti Ref</span>
+                  <span className="text-[10px] font-mono font-bold text-slate-600">eSewa/Khalti Ref</span>
                 </div>
 
                 <input
@@ -493,7 +493,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                   onChange={(e) => setReference(e.target.value)}
                   placeholder="e.g. 7X894102 or TXN98001234"
                   required
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-violet-600 focus:ring-2 focus:ring-violet-100 text-xs font-bold text-slate-900 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-slate-400 outline-none focus:outline-none focus:ring-0 text-xs font-bold text-slate-900 bg-white placeholder:text-slate-400"
                 />
 
                 {/* Optional Screenshot */}
@@ -512,7 +512,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                       </button>
                     </div>
                   ) : (
-                    <label className="border border-dashed border-slate-300 hover:border-violet-500 rounded-xl p-2.5 text-center block cursor-pointer transition-all bg-slate-50/50">
+                    <label className="border border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-2.5 text-center block cursor-pointer transition-all bg-slate-50/50">
                       <input
                         type="file"
                         accept="image/*"

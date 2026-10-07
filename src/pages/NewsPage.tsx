@@ -364,7 +364,7 @@ export const NewsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search redeem codes, Free Fire updates, offers..."
-              className="w-full bg-slate-50 border border-slate-200/80 focus:bg-white focus:border-violet-600 rounded-2xl pl-9.5 pr-8 py-2 text-xs text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-violet-500/15 transition-all placeholder:text-slate-400 placeholder:truncate truncate shadow-2xs"
+              className="w-full bg-slate-50 border border-slate-200/80 focus:bg-white focus:border-slate-400 rounded-2xl pl-9.5 pr-8 py-2 text-xs text-slate-900 font-semibold outline-none focus:outline-none focus:ring-0 transition-all placeholder:text-slate-400 placeholder:truncate truncate shadow-2xs"
             />
             {searchQuery && (
               <button

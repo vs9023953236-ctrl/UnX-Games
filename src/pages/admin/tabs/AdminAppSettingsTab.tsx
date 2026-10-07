@@ -977,7 +977,7 @@ export const AdminAppSettingsTab: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                Configure your custom OpenRouter API integration (<code className="font-mono font-semibold">nvidia/nemotron-3-ultra-550b-a55b:free</code>) with reasoning preservation for Alex Support.
+                Configure your custom OpenRouter API integration (<code className="font-mono font-semibold">nvidia/nemotron-3-ultra-550b-a55b:free</code>) with reasoning preservation for the 3-Model AI Council.
               </p>
             </div>
 

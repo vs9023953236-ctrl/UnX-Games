@@ -35,8 +35,11 @@ import {
   Layers,
   Crown,
   Clock,
+  Bell,
+  BellRing,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { isSubscribedToPriceAlert, togglePriceAlert } from '../utils/priceAlerts';
 
 export const ProductDetailsPage: React.FC = () => {
   const {
@@ -222,6 +225,39 @@ export const ProductDetailsPage: React.FC = () => {
       name: 'Standard Package',
       price: product.price || 0,
     };
+
+  // Price alert subscription state
+  const [isAlertSubscribed, setIsAlertSubscribed] = useState<boolean>(() =>
+    product ? isSubscribedToPriceAlert(product.id, selectedPkg?.id) : false
+  );
+
+  React.useEffect(() => {
+    if (product) {
+      setIsAlertSubscribed(isSubscribedToPriceAlert(product.id, selectedPkg?.id));
+    }
+  }, [product?.id, selectedPkg?.id]);
+
+  const handleTogglePriceAlert = () => {
+    if (!product) return;
+    const nowSubscribed = togglePriceAlert(
+      {
+        productId: product.id,
+        productName: product.name,
+        productImage: getSafeGameImage(product),
+        packageId: selectedPkg?.id,
+        packageName: selectedPkg?.name,
+        currentPrice: selectedPkg?.price || product.price || 0,
+      },
+      currentUser?.uid
+    );
+
+    setIsAlertSubscribed(nowSubscribed);
+    if (nowSubscribed) {
+      showToast('success', 'Price Alert Set!', `We will notify you in-app when the price of ${product.name} (${selectedPkg?.name || 'Top-up'}) drops!`);
+    } else {
+      showToast('info', 'Alert Removed', `Price alert subscription removed.`);
+    }
+  };
 
   const isCodeDelivery = 
     String(product?.category || '').toLowerCase().includes('voucher') ||
@@ -422,9 +458,33 @@ export const ProductDetailsPage: React.FC = () => {
                 )}
               </div>
 
-              <h1 className="text-base sm:text-xl font-black text-slate-900 truncate leading-tight tracking-tight">
-                {product.name}
-              </h1>
+              <div className="flex items-center justify-between gap-2">
+                <h1 className="text-base sm:text-xl font-black text-slate-900 truncate leading-tight tracking-tight">
+                  {product.name}
+                </h1>
+                <button
+                  type="button"
+                  onClick={handleTogglePriceAlert}
+                  title={isAlertSubscribed ? 'Price alert active - Tap to unsubscribe' : 'Subscribe to price drop alert'}
+                  className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 border shadow-2xs ${
+                    isAlertSubscribed
+                      ? 'bg-amber-500 text-white border-amber-600 hover:bg-amber-600'
+                      : 'bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-700 border-slate-200 hover:border-amber-300'
+                  }`}
+                >
+                  {isAlertSubscribed ? (
+                    <>
+                      <BellRing size={13} className="animate-bounce" />
+                      <span>Alert Active</span>
+                    </>
+                  ) : (
+                    <>
+                      <Bell size={13} />
+                      <span>Price Alert</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
               {/* Badges Summary */}
               <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
@@ -568,7 +628,7 @@ export const ProductDetailsPage: React.FC = () => {
                     if (validationError) setValidationError(null);
                   }}
                   placeholder={requiredFields.idPlaceholder || 'Enter numeric Player ID / Character UID'}
-                  className="w-full bg-slate-50/80 border border-slate-200 focus:border-violet-600 focus:bg-white rounded-2xl pl-4 pr-20 py-3 text-xs sm:text-sm font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-hidden focus:ring-3 focus:ring-violet-500/15 transition-all shadow-2xs font-mono"
+                  className="w-full bg-slate-50/80 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-2xl pl-4 pr-20 py-3 text-xs sm:text-sm font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal outline-none focus:outline-none focus:ring-0 transition-all shadow-2xs font-mono"
                 />
 
                 <div className="absolute right-2 flex items-center gap-1">
@@ -585,7 +645,7 @@ export const ProductDetailsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={handlePasteUID}
-                      className="px-2.5 py-1.5 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-black flex items-center gap-1 transition-all active:scale-95 border border-violet-200/80 cursor-pointer shadow-2xs"
+                      className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-black flex items-center gap-1 transition-all active:scale-95 border border-slate-200 cursor-pointer shadow-2xs"
                       title="Paste from clipboard"
                     >
                       <ClipboardPaste size={12} />
@@ -608,7 +668,7 @@ export const ProductDetailsPage: React.FC = () => {
                 <div className="space-y-1.5">
                   <label className="text-xs font-black text-slate-800 flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
-                      <Layers size={13} className="text-violet-600" />
+                      <Layers size={13} className="text-slate-600" />
                       <span>{requiredFields.zoneIdLabel || 'Zone ID / Server ID'}</span>
                     </span>
                     <span className="text-[10px] text-rose-500 font-bold">* Required</span>
@@ -621,7 +681,7 @@ export const ProductDetailsPage: React.FC = () => {
                       if (validationError) setValidationError(null);
                     }}
                     placeholder={requiredFields.zoneIdPlaceholder || 'e.g. 2048'}
-                    className="w-full bg-slate-50/80 border border-slate-200 focus:border-violet-600 focus:bg-white rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-900 focus:outline-hidden focus:ring-3 focus:ring-violet-500/15 transition-all shadow-2xs font-mono"
+                    className="w-full bg-slate-50/80 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:outline-none focus:ring-0 transition-all shadow-2xs font-mono"
                   />
                 </div>
               )}
@@ -632,14 +692,14 @@ export const ProductDetailsPage: React.FC = () => {
                 requiredFields.serverOptions.length > 0 && (
                   <div className="space-y-1.5">
                     <label className="text-xs font-black text-slate-800 flex items-center gap-1.5">
-                      <Globe size={13} className="text-violet-600" />
+                      <Globe size={13} className="text-slate-600" />
                       <span>{requiredFields.serverFieldLabel || 'Server / Region'}</span>
                     </label>
                     <div className="relative">
                       <select
                         value={selectedServer}
                         onChange={(e) => setSelectedServer(e.target.value)}
-                        className="w-full appearance-none bg-slate-50/80 border border-slate-200 focus:border-violet-600 focus:bg-white rounded-2xl pl-3.5 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-900 focus:outline-hidden focus:ring-3 focus:ring-violet-500/15 transition-all shadow-2xs"
+                        className="w-full appearance-none bg-slate-50/80 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-2xl pl-3.5 pr-8 py-2.5 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:outline-none focus:ring-0 transition-all shadow-2xs"
                       >
                         {requiredFields.serverOptions.map((opt, optIdx) => (
                           <option key={`server-opt-${opt}-${optIdx}`} value={opt}>

@@ -338,7 +338,7 @@ export const AdminOmniAiChatBox: React.FC<{
             onChange={(e) => setInputPrompt(e.target.value)}
             placeholder="Tell your Super-AI to build code, run SQL, fix bugs, or verify orders in any language..."
             rows={2}
-            className="w-full p-3 pr-10 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-500 text-xs sm:text-sm font-medium outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600 resize-none"
+            className="w-full p-3 pr-10 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-500 text-xs sm:text-sm font-medium outline-none focus:border-slate-500 focus:ring-0 resize-none"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();

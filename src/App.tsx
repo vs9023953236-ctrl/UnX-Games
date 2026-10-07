@@ -35,6 +35,7 @@ import { AppLogo } from './components/common/AppLogo';
 import { SEOHead } from './components/common/SEOHead';
 import { UnifiedAppLoadingScreen } from './components/common/UnifiedAppLoadingScreen';
 import { PerfectAppSpinner } from './components/common/PerfectAppSpinner';
+import { NativeMobileSpinner } from './components/common/NativeMobileSpinner';
 import { initImagePreloader } from './utils/imagePreloader';
 
 // Helper to dynamically load secondary components with automatic retry and graceful fallback
@@ -149,7 +150,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
     return (
       <div className="min-h-[50vh] flex items-center justify-center p-6">
-        <div className="w-9 h-9 rounded-full border-3 border-violet-600 border-t-transparent animate-spin" />
+        <NativeMobileSpinner size="md" variant="tapered-arc" color="violet" />
       </div>
     );
   }
@@ -248,7 +249,7 @@ const getPathForTab = (
 
 const RouteLoadingFallback: React.FC = () => (
   <div className="min-h-[50vh] flex items-center justify-center p-6">
-    <div className="w-8 h-8 rounded-full border-3 border-violet-600 border-t-transparent animate-spin" />
+    <NativeMobileSpinner size="md" variant="tapered-arc" color="violet" />
   </div>
 );
 
@@ -268,16 +269,6 @@ const AppContent: React.FC = () => {
   } = useStore();
   const { isAdmin, isAuthenticated, logout } = useAuth();
   const location = useLocation();
-
-  // Defer global image preloader until after initial interactive paint for low-end mobile performance
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => initImagePreloader(), { timeout: 2000 });
-    } else {
-      const timer = setTimeout(() => initImagePreloader(), 800);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   // Enforce Maintenance Mode: Auto-logout non-admin users
   useEffect(() => {
@@ -679,36 +670,68 @@ const AppContent: React.FC = () => {
 };
 
 const AppBootController: React.FC = () => {
-  const { isLoadingProducts, isLoadingCategories, isLoadingNews } = useStore();
-  const { authStatus } = useAuth();
+  const { isLoadingProducts, isLoadingCategories, products } = useStore();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
+  // Prioritize First Contentful Paint (FCP) by evaluating critical-only readiness
   useEffect(() => {
-    // Fail-safe max boot timer: Guarantee app splash dismissal within 5 seconds if offline/stuck
+    // 1. Fail-safe fast boot timer: Guarantee app splash dismissal within 1000ms for instant perceived load
     const maxBootTimer = setTimeout(() => {
       setIsDataLoaded(true);
-    }, 5000);
+    }, 1000);
 
-    // Complete app data load condition:
-    // Only dismiss loading screen once Products, Categories, News, and Auth session have completed loading
-    const isAllDataReady = !isLoadingProducts && !isLoadingCategories && !isLoadingNews && authStatus !== 'loading';
+    // 2. Critical render condition: Only wait for primary product catalog/categories (or existing cache)
+    // Non-critical data (news, reviews, notifications, secondary auth) are deferred to background
+    const isCriticalDataReady = (!isLoadingProducts && !isLoadingCategories) || (products && products.length > 0);
 
-    if (isAllDataReady) {
-      const timer = setTimeout(() => {
+    if (isCriticalDataReady) {
+      // Execute transition on next visual frame to guarantee instant FCP without artificial delays
+      const rafId = requestAnimationFrame(() => {
         setIsDataLoaded(true);
-      }, 300);
+      });
       return () => {
-        clearTimeout(timer);
+        cancelAnimationFrame(rafId);
         clearTimeout(maxBootTimer);
       };
     }
 
     return () => clearTimeout(maxBootTimer);
-  }, [isLoadingProducts, isLoadingCategories, isLoadingNews, authStatus]);
+  }, [isLoadingProducts, isLoadingCategories, products]);
+
+  // Defer non-critical JS/CSS background tasks until AFTER First Contentful Paint has occurred
+  useEffect(() => {
+    if (!isDataLoaded) return;
+
+    const runNonCriticalBootstrap = () => {
+      try {
+        // Defer image preloader to idle time
+        initImagePreloader();
+
+        // Mark performance timeline for FCP completion
+        if (typeof window !== 'undefined' && 'performance' in window && 'mark' in window.performance) {
+          window.performance.mark('fcp:app_boot_complete');
+        }
+      } catch (err) {
+        console.warn('Non-critical boot deferral note:', err);
+      }
+    };
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = (window as any).requestIdleCallback(runNonCriticalBootstrap, { timeout: 2000 });
+      return () => {
+        if ('cancelIdleCallback' in window) {
+          (window as any).cancelIdleCallback(idleId);
+        }
+      };
+    } else {
+      const timer = setTimeout(runNonCriticalBootstrap, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [isDataLoaded]);
 
   return (
     <div className="relative h-full w-full bg-[#FAFBFF]">
-      {/* Mount AppShell instantly so routes and components hydrate seamlessly in background */}
+      {/* Mount AppShell instantly so routes and critical UI components paint immediately */}
       <AppShell>
         <AppContent />
       </AppShell>

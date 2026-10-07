@@ -116,14 +116,17 @@ export const PerfectAppSpinner: React.FC<PerfectAppSpinnerProps> = ({
         {/* 2. Static Background Outer Circular Track */}
         <div className="absolute inset-1 rounded-full border-4 border-slate-200/70 shadow-2xs pointer-events-none z-0" />
 
-        {/* 3. Guaranteed Continuous 360-Degree Spinning Arc Ring (120 FPS Hardware GPU Accelerated) */}
-        <div className="absolute inset-1 rounded-full pointer-events-none z-10 animate-spin transform-gpu will-change-transform">
-          <svg className="w-full h-full transform-gpu" viewBox="0 0 100 100">
+        {/* 3. Guaranteed Continuous 360-Degree Forward Spinning Arc Ring (GPU Hardware Accelerated) */}
+        <div
+          className="absolute inset-0 rounded-full pointer-events-none z-10 spinner-rotate"
+          style={{ transformOrigin: 'center center' }}
+        >
+          <svg className="w-full h-full" viewBox="0 0 100 100">
             <defs>
               <linearGradient id={`perfectSpinnerGrad-${theme}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={theme === 'red' || theme === 'amber' ? '#EF4444' : '#7C3AED'} />
-                <stop offset="50%" stopColor={theme === 'emerald' ? '#10B981' : '#F59E0B'} />
-                <stop offset="100%" stopColor={theme === 'red' || theme === 'amber' ? '#D946EF' : '#2563EB'} />
+                <stop offset="0%" stopColor={theme === 'red' || theme === 'amber' ? '#EF4444' : '#7C3AED'} stopOpacity="1" />
+                <stop offset="60%" stopColor={theme === 'emerald' ? '#10B981' : theme === 'red' ? '#F59E0B' : '#8B5CF6'} stopOpacity="0.8" />
+                <stop offset="100%" stopColor={theme === 'red' || theme === 'amber' ? '#D946EF' : '#2563EB'} stopOpacity="0.1" />
               </linearGradient>
             </defs>
             <circle
@@ -132,25 +135,41 @@ export const PerfectAppSpinner: React.FC<PerfectAppSpinnerProps> = ({
               r="44"
               fill="none"
               stroke={`url(#perfectSpinnerGrad-${theme})`}
-              strokeWidth="6"
-              strokeDasharray="175 80"
+              strokeWidth="5"
+              strokeDasharray="180 96"
               strokeLinecap="round"
+            />
+            {/* Bright Glowing Leading Orbit Bead for unmistakable crisp forward rotation */}
+            <circle
+              cx="94"
+              cy="50"
+              r="4.5"
+              fill={theme === 'red' ? '#EF4444' : theme === 'amber' ? '#F59E0B' : theme === 'emerald' ? '#10B981' : '#A855F7'}
+              stroke="#FFFFFF"
+              strokeWidth="2"
             />
           </svg>
         </div>
 
-        {/* 4. Counter-Rotating Subtle Dotted Outer Ring for Motion Depth */}
-        <div className="absolute inset-[-4px] rounded-full border-2 border-dashed border-slate-300/80 pointer-events-none z-0 opacity-70 animate-[spin_3s_linear_infinite_reverse] transform-gpu will-change-transform" />
+        {/* 4. Synchronized Forward Outer Orbit Pulse Ring */}
+        <div
+          className="absolute inset-[-4px] rounded-full border border-violet-400/40 pointer-events-none z-0 spinner-rotate-slow opacity-60"
+          style={{ transformOrigin: 'center center' }}
+        />
 
-        {/* 5. Center Full-Bleed Logo Container */}
-        <div className={`relative ${logoContainer} flex items-center justify-center rounded-[22%] shadow-2xl z-20 overflow-hidden`}>
+        {/* 5. Center Full-Bleed Logo Container with Subtle Breathing Motion */}
+        <motion.div
+          animate={{ scale: [1, 1.03, 1] }}
+          transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+          className={`relative ${logoContainer} flex items-center justify-center rounded-[22%] shadow-2xl z-20 overflow-hidden`}
+        >
           <AppLogo
             size="custom"
             className="w-full h-full"
             imageClassName="w-full h-full object-cover rounded-[22%]"
             glow={false}
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Optional Title & Subtitle */}

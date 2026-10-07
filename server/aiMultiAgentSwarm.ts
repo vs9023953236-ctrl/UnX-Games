@@ -233,9 +233,9 @@ const TWENTY_FRONTIER_AGENTS: LinkedAiAgent[] = [
   },
   {
     id: 'agent_gemini_flash',
-    name: 'Gemini 2.5 Flash Vision',
+    name: 'Gemini 3.5 Flash Live',
     provider: 'Google AI',
-    model: 'google/gemini-2.5-flash',
+    model: 'google/gemini-3.5-flash',
     role: 'Payment OCR & QR Scanner',
     specialty: 'Sub-second eSewa/Khalti QR screenshot verification, image parsing & live OCR telemetry',
     status: 'LINKED_ACTIVE',
@@ -247,9 +247,9 @@ const TWENTY_FRONTIER_AGENTS: LinkedAiAgent[] = [
   },
   {
     id: 'agent_gemini_pro',
-    name: 'Gemini 2.5 Pro Vision',
+    name: 'Gemini 3.8 Flash Vision',
     provider: 'Google AI',
-    model: 'google/gemini-2.5-pro',
+    model: 'google/gemini-3.8-flash',
     role: 'Multimodal Banner & Graphics Designer',
     specialty: 'High-density image analysis, flash sale banner generation & visual asset verification',
     status: 'LINKED_ACTIVE',

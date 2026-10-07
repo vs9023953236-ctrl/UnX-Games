@@ -719,14 +719,14 @@ export const CheckoutPage: React.FC = () => {
                         placeholder="Enter voucher code (e.g. SAVE10)"
                         value={couponCodeInput}
                         onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
-                        className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-3 pr-2 text-sm font-mono font-bold uppercase transition-all placeholder:normal-case placeholder:font-sans placeholder:font-normal placeholder:text-slate-400 focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/15"
+                        className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-3 pr-2 text-sm font-mono font-bold uppercase transition-all placeholder:normal-case placeholder:font-sans placeholder:font-normal placeholder:text-slate-400 focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={handleApplyCoupon}
                       disabled={isValidatingCoupon || !couponCodeInput.trim()}
-                      className="min-h-11 shrink-0 cursor-pointer rounded-xl bg-slate-900 px-4 text-xs font-black text-white shadow-2xs transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 active:scale-95 disabled:bg-slate-200 disabled:text-slate-400"
+                      className="min-h-11 shrink-0 cursor-pointer rounded-xl bg-slate-900 px-4 text-xs font-black text-white shadow-2xs transition-all hover:bg-slate-800 outline-none focus:outline-none active:scale-95 disabled:bg-slate-200 disabled:text-slate-400"
                     >
                       {isValidatingCoupon ? 'Verifying...' : 'Apply'}
                     </button>
@@ -753,7 +753,7 @@ export const CheckoutPage: React.FC = () => {
                     <span className="text-[10px] text-slate-400 font-medium">All taxes &amp; fees included</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xl sm:text-2xl font-black text-violet-700 tracking-tight">{formatNPR(finalPayablePrice)}</span>
+                    <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{formatNPR(finalPayablePrice)}</span>
                   </div>
                 </div>
               </div>
@@ -763,7 +763,7 @@ export const CheckoutPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-xl bg-violet-50 border border-violet-200/60 text-violet-600 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center">
                     <User size={14} />
                   </div>
                   <div>
@@ -793,7 +793,7 @@ export const CheckoutPage: React.FC = () => {
                       onChange={(e) => setCustomerName(e.target.value)}
                       placeholder="Enter your full name"
                       autoComplete="name"
-                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/15"
+                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
@@ -802,13 +802,13 @@ export const CheckoutPage: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label htmlFor="checkout-phone" className="block text-[11px] font-bold text-slate-700">
-                      Mobile / WhatsApp Number <span className="text-violet-600">*</span>
+                      Mobile / WhatsApp Number <span className="text-slate-600">*</span>
                     </label>
-                    <span className="text-[10px] font-extrabold text-violet-700 bg-violet-50 px-1.5 py-0.2 rounded">
+                    <span className="text-[10px] font-extrabold text-slate-700 bg-slate-100 px-1.5 py-0.2 rounded">
                       Required for Delivery
                     </span>
                   </div>
-                  <div className="flex items-center rounded-xl bg-slate-50 border border-slate-200/80 focus-within:bg-white focus-within:border-violet-600 transition-all overflow-hidden">
+                  <div className="flex items-center rounded-xl bg-slate-50 border border-slate-200/80 focus-within:bg-white focus-within:border-slate-400 transition-all overflow-hidden">
                     <div className="inline-flex items-center gap-1 px-3 py-2 bg-slate-100/90 border-r border-slate-200/80 text-xs font-bold text-slate-700 shrink-0 select-none">
                       <span>🇳🇵</span>
                       <span className="font-mono text-[11px]">+977</span>
@@ -840,7 +840,7 @@ export const CheckoutPage: React.FC = () => {
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       placeholder="e.g. gamer@gmail.com"
                       autoComplete="email"
-                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/15"
+                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
@@ -849,7 +849,7 @@ export const CheckoutPage: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label htmlFor="checkout-location" className="block text-[11px] font-bold text-slate-700 flex items-center gap-1">
-                      <MapPin size={13} className="text-violet-600" />
+                      <MapPin size={13} className="text-slate-600" />
                       <span>Delivery Address / Location</span>
                     </label>
                     <span className="text-[9.5px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -866,7 +866,7 @@ export const CheckoutPage: React.FC = () => {
                       onChange={(e) => setCustomerLocation(e.target.value)}
                       placeholder="e.g. Kathmandu, Nepal"
                       autoComplete="address-level2"
-                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/15"
+                      className="min-h-11 w-full rounded-xl border border-slate-200/80 bg-slate-50 pl-9 pr-3.5 text-sm font-medium text-slate-900 transition-all focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
                     />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 pl-1 flex items-center gap-1">
@@ -1375,7 +1375,7 @@ export const CheckoutPage: React.FC = () => {
                     value={transactionId}
                     onChange={(e) => setTransactionId(e.target.value.toUpperCase().replace(/\s+/g, ''))}
                     placeholder={isEsewa ? "E.G. 0005F9A OR 210984" : "E.G. KHLT-XXXX OR REF ID"}
-                    className="w-full bg-slate-50 border-2 border-slate-200 focus:border-violet-600 focus:bg-white rounded-2xl pl-3.5 pr-20 py-3 text-sm font-mono font-black text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-hidden transition-all uppercase tracking-wider shadow-inner"
+                    className="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-400 focus:bg-white rounded-2xl pl-3.5 pr-20 py-3 text-sm font-mono font-black text-slate-900 placeholder:text-slate-400 placeholder:font-normal outline-none focus:outline-none focus:ring-0 transition-all uppercase tracking-wider shadow-inner"
                   />
                   <div className="absolute right-2 flex items-center gap-1">
                     {transactionId ? (

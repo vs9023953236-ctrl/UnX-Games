@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Clock, Sparkles, Shield, CreditCard, Search, Loader2 } from 'lucide-react';
+import { Clock, Sparkles, Shield, CreditCard, Search } from 'lucide-react';
 import { AppLogo } from './AppLogo';
 import { PerfectAppSpinner } from './PerfectAppSpinner';
 import { UnifiedAppLoadingScreen } from './UnifiedAppLoadingScreen';
+import { NativeMobileSpinner } from './NativeMobileSpinner';
 
 export type LoadingMode =
   | 'startup'
@@ -135,7 +136,7 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
     return (
       <div className={`flex items-center gap-2 py-3 px-4 text-slate-500 text-xs font-semibold ${className}`}>
         <Search size={14} className="animate-pulse text-violet-500" />
-        <Loader2 size={13} className="animate-spin text-violet-500" />
+        <NativeMobileSpinner size="xs" variant="tapered-arc" color="violet" />
         <span>Searching...</span>
       </div>
     );
@@ -145,7 +146,7 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
   if (mode === 'button') {
     return (
       <span className="inline-flex items-center justify-center gap-2">
-        <Loader2 size={14} className="animate-spin text-current" />
+        <NativeMobileSpinner size="xs" variant="tapered-arc" color="current" />
         <span>{title || 'Processing...'}</span>
       </span>
     );
@@ -251,10 +252,11 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
     return (
       <div className={`w-full flex flex-col items-center justify-center py-8 px-4 text-center select-none ${minHeight} ${className}`}>
         <div className="relative flex items-center justify-center mb-4">
-          <div className="absolute -inset-3 rounded-full bg-violet-100 animate-pulse" />
-          <div className="absolute -inset-2.5 rounded-full border-2 border-violet-200 border-t-violet-600 animate-spin" />
-          <div className="relative p-3 bg-white rounded-full shadow-md border border-violet-100/50 flex items-center justify-center">
-            <Shield size={24} className="text-violet-600" />
+          <div className="absolute -inset-2 rounded-full pointer-events-none">
+            <NativeMobileSpinner size="xl" variant="dual-neon" color="violet" />
+          </div>
+          <div className="relative p-3.5 bg-white rounded-full shadow-lg border border-violet-100 flex items-center justify-center z-10">
+            <Shield size={26} className="text-violet-600" />
           </div>
         </div>
 
@@ -262,9 +264,7 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
         <p className="text-xs font-semibold text-slate-500 max-w-xs leading-normal">{orderMsg}</p>
 
         <div className="flex items-center justify-center gap-1.5 mt-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-600 animate-bounce [animation-delay:-0.3s]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-600 animate-bounce [animation-delay:-0.15s]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-600 animate-bounce" />
+          <NativeMobileSpinner size="xs" variant="tapered-arc" color="violet" />
         </div>
       </div>
     );
@@ -278,10 +278,11 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
     return (
       <div className={`w-full flex flex-col items-center justify-center py-8 px-4 text-center select-none ${minHeight} ${className}`}>
         <div className="relative flex items-center justify-center mb-5">
-          <div className="absolute -inset-4 rounded-full bg-indigo-50/80 animate-ping pointer-events-none" />
-          <div className="absolute -inset-2 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin" />
-          <div className="relative p-3.5 bg-white rounded-full shadow-md border border-indigo-100 flex items-center justify-center">
-            <CreditCard size={24} className="text-indigo-600" />
+          <div className="absolute -inset-2 rounded-full pointer-events-none">
+            <NativeMobileSpinner size="xl" variant="tapered-arc" color="indigo" />
+          </div>
+          <div className="relative p-3.5 bg-white rounded-full shadow-lg border border-indigo-100 flex items-center justify-center z-10">
+            <CreditCard size={26} className="text-indigo-600" />
           </div>
         </div>
 
@@ -290,7 +291,7 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
 
         {/* Payment progress indicator if passed */}
         {progress !== undefined ? (
-          <div className="w-full max-w-xs bg-slate-100 rounded-full h-1.5 overflow-hidden mb-2">
+          <div className="w-full max-w-xs bg-slate-100 rounded-full h-1.5 overflow-hidden mb-2 shadow-inner">
             <div
               className="bg-indigo-600 h-full rounded-full transition-all duration-300"
               style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
@@ -298,9 +299,7 @@ export const GlobalLoadingSystem: React.FC<GlobalLoadingSystemProps> = ({
           </div>
         ) : (
           <div className="flex items-center justify-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-bounce [animation-delay:-0.3s]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-bounce [animation-delay:-0.15s]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-bounce" />
+            <NativeMobileSpinner size="xs" variant="tapered-arc" color="indigo" />
           </div>
         )}
       </div>

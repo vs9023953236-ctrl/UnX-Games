@@ -310,13 +310,13 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         {!isAdminView && <BottomNav />}
       </div>
 
-      {/* Advanced Perfectly Round Floating Unx AI Assistant Button */}
+      {/* UNX Live AI Assistant Floating Button & Modal */}
       {!isAdminView && !isAuthPage && (
-        <UnxAiFloatingButton onClick={() => setShowAiModal(true)} />
+        <>
+          <UnxAiFloatingButton onClick={() => setShowAiModal(true)} />
+          <UnxAiAssistantModal isOpen={showAiModal} onClose={() => setShowAiModal(false)} />
+        </>
       )}
-
-      {/* Unx AI Assistant Modal */}
-      <UnxAiAssistantModal isOpen={showAiModal} onClose={() => setShowAiModal(false)} />
 
       {/* PWA Update Notification Prompt */}
       <PWAUpdatePrompt />

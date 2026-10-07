@@ -91,8 +91,12 @@ import {
   checkRateLimit,
 } from './rateLimiter.js';
 import { RATE_LIMIT_CONFIG } from './rateLimitConfig.js';
+import { handleImageTransform } from './imageTransform.js';
 
 export const apiRouter = Router();
+
+// Automated WebP / AVIF Image Transformation & Optimization Proxy Route
+apiRouter.get('/image/transform', handleImageTransform);
 
 // Pre-configured Centralized Rate Limit Middlewares
 export const signupIpRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.SIGNUP_IP);

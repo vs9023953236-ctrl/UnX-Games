@@ -227,7 +227,7 @@ export const AboutUsPage: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-slate-50/70 text-slate-900 antialiased selection:bg-violet-600 selection:text-white pb-2 sm:pb-2">
+    <div className="flex flex-col bg-slate-50/70 text-slate-900 antialiased selection:bg-indigo-600 selection:text-white pb-2 sm:pb-2">
       
       {/* MAIN MOBILE APP CONTENT CONTAINER */}
       <div className="w-full max-w-7xl mx-auto px-2 sm:px-2 pt-1 sm:pt-2 pb-2 sm:pb-2 space-y-2 sm:space-y-2">
@@ -236,10 +236,10 @@ export const AboutUsPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-violet-500/20 overflow-hidden space-y-4"
+          className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-indigo-500/20 overflow-hidden space-y-4"
         >
-          {/* Ambient Glow Bubbles */}
-          <div className="absolute top-0 right-0 w-52 h-52 bg-violet-600/15 rounded-full blur-3xl pointer-events-none" />
+          {/* Ambient Glow */}
+          <div className="absolute top-0 right-0 w-52 h-52 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-44 h-44 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
           {/* Top Status & Verification Badge */}
@@ -274,17 +274,17 @@ export const AboutUsPage: React.FC = () => {
                 <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none">
                   {brandName}
                 </h1>
-                <span className="px-2 py-0.5 rounded-md bg-violet-500/30 border border-violet-400/40 text-violet-200 font-black text-[10px] uppercase tracking-wider inline-flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-md bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 font-black text-[10px] uppercase tracking-wider inline-flex items-center gap-1">
                   <Sparkles size={10} className="text-amber-400" /> Nepal&apos;s #1 Hub
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-violet-300 font-black tracking-tight">
+              <p className="text-xs sm:text-sm text-indigo-300 font-black tracking-tight">
                 {brandCompanyLine}
               </p>
 
               <p className="text-xs text-slate-300 leading-relaxed font-normal pt-1">
-                Nepal&apos;s high-speed gaming recharge platform. Instant top-ups with domestic wallets (<strong className="text-emerald-300 font-bold">eSewa</strong>, <strong className="text-violet-300 font-bold">Khalti</strong>, <strong className="text-rose-300 font-bold">IME Pay</strong>, &amp; <strong className="text-cyan-300 font-bold">Fonepay</strong>) with zero dollar card required.
+                Nepal&apos;s high-speed gaming recharge platform. Instant top-ups with domestic wallets (<strong className="text-emerald-300 font-bold">eSewa</strong>, <strong className="text-sky-300 font-bold">Khalti</strong>, <strong className="text-rose-300 font-bold">IME Pay</strong>, &amp; <strong className="text-cyan-300 font-bold">Fonepay</strong>) with zero dollar card required.
               </p>
             </div>
           </div>
@@ -294,7 +294,7 @@ export const AboutUsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setCurrentTab('shop')}
-              className="py-2.5 px-3 rounded-xl bg-violet-600 hover:bg-violet-700 active:scale-95 text-white font-bold flex items-center justify-center gap-1.5 shadow-md shadow-violet-900/40 transition-all cursor-pointer"
+              className="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold flex items-center justify-center gap-1.5 shadow-md shadow-indigo-900/40 transition-all cursor-pointer"
             >
               <Gamepad2 size={15} />
               <span>Explore Store</span>
@@ -350,7 +350,7 @@ export const AboutUsPage: React.FC = () => {
 
         {/* 3. MISSION, VISION & ZERO PASSWORD */}
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/90 space-y-3">
-          <div className="flex items-center gap-2 text-violet-600 border-b border-slate-100 pb-2.5">
+          <div className="flex items-center gap-2 text-indigo-600 border-b border-slate-100 pb-2.5">
             <Flame size={18} />
             <h2 className="text-sm font-black text-slate-900 tracking-tight">
               Our Mission &amp; Purpose
@@ -359,7 +359,7 @@ export const AboutUsPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-violet-700">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700">
                 <Target size={14} />
                 <span>Our Mission</span>
               </div>
@@ -525,7 +525,7 @@ export const AboutUsPage: React.FC = () => {
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/90 space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
             <div className="flex items-center gap-2 text-slate-900">
-              <Users size={18} className="text-violet-600" />
+              <Users size={18} className="text-indigo-600" />
               <h2 className="text-sm font-black tracking-tight">
                 Verified Operations Team
               </h2>
@@ -545,7 +545,7 @@ export const AboutUsPage: React.FC = () => {
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs text-white shrink-0 shadow-xs ${
                       member.role === 'OWNER' || member.role === 'STORE_OWNER' ? 'bg-amber-500' :
-                      member.role === 'SUPER_ADMIN' || member.role === 'ADMIN' ? 'bg-violet-600' :
+                      member.role === 'SUPER_ADMIN' || member.role === 'ADMIN' ? 'bg-indigo-600' :
                       'bg-slate-700'
                     }`}>
                       {member.full_name?.charAt(0).toUpperCase() || 'T'}
@@ -583,14 +583,14 @@ export const AboutUsPage: React.FC = () => {
           </div>
 
           {/* Join Team Banner */}
-          <div className="p-3.5 bg-violet-50/80 border border-violet-100 rounded-xl flex items-center justify-between gap-3">
+          <div className="p-3.5 bg-indigo-50/80 border border-indigo-100 rounded-xl flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">
-              <UserCheck size={20} className="text-violet-600 shrink-0" />
+              <UserCheck size={20} className="text-indigo-600 shrink-0" />
               <div className="min-w-0">
-                <span className="text-xs font-bold text-violet-950 block truncate">
+                <span className="text-xs font-bold text-indigo-950 block truncate">
                   Want to join {brandName} as Staff or Partner?
                 </span>
-                <span className="text-[10px] text-violet-700 block">
+                <span className="text-[10px] text-indigo-700 block">
                   Openings in verification, operations, and community support.
                 </span>
               </div>
@@ -598,7 +598,7 @@ export const AboutUsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setCurrentTab('join_team')}
-              className="px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-black text-xs shrink-0 transition-all shadow-xs active:scale-95 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shrink-0 transition-all shadow-xs active:scale-95 cursor-pointer"
             >
               Apply Now →
             </button>
@@ -624,9 +624,9 @@ export const AboutUsPage: React.FC = () => {
               <span className="text-xs font-black text-emerald-700 block">eSewa Wallet</span>
               <span className="text-[10px] text-emerald-600 font-medium block">Instant QR &amp; Manual</span>
             </div>
-            <div className="py-3 px-2 bg-purple-50/50 border border-purple-200/80 rounded-xl text-center space-y-0.5">
-              <span className="text-xs font-black text-purple-700 block">Khalti Digital</span>
-              <span className="text-[10px] text-purple-600 font-medium block">Direct Verification</span>
+            <div className="py-3 px-2 bg-sky-50/50 border border-sky-200/80 rounded-xl text-center space-y-0.5">
+              <span className="text-xs font-black text-sky-700 block">Khalti Digital</span>
+              <span className="text-[10px] text-sky-600 font-medium block">Direct Verification</span>
             </div>
             <div className="py-3 px-2 bg-rose-50/50 border border-rose-200/80 rounded-xl text-center space-y-0.5">
               <span className="text-xs font-black text-rose-700 block">IME Pay</span>
@@ -642,7 +642,7 @@ export const AboutUsPage: React.FC = () => {
         {/* 8. TOP-UP CATALOG BENTO */}
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/90 space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-            <div className="flex items-center gap-2 text-violet-600">
+            <div className="flex items-center gap-2 text-indigo-600">
               <Gamepad2 size={18} />
               <h2 className="text-sm font-black text-slate-900 tracking-tight">
                 Supported Top-Up Catalog
@@ -651,7 +651,7 @@ export const AboutUsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setCurrentTab('shop')}
-              className="text-xs font-bold text-violet-600 hover:text-violet-700 flex items-center gap-1 cursor-pointer active:scale-95"
+              className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer active:scale-95"
             >
               <span>Full Store</span>
               <ChevronRight size={14} />
@@ -664,7 +664,7 @@ export const AboutUsPage: React.FC = () => {
                 key={idx}
                 type="button"
                 onClick={() => setCurrentTab('shop')}
-                className="p-3 bg-slate-50 hover:bg-violet-50/50 border border-slate-200/80 hover:border-violet-200 rounded-2xl space-y-1 cursor-pointer transition-all active:scale-95 text-left group"
+                className="p-3 bg-slate-50 hover:bg-indigo-50/50 border border-slate-200/80 hover:border-indigo-200 rounded-2xl space-y-1 cursor-pointer transition-all active:scale-95 text-left group"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-2xl">{game.icon}</span>
@@ -672,7 +672,7 @@ export const AboutUsPage: React.FC = () => {
                     {game.tag}
                   </span>
                 </div>
-                <div className="font-black text-xs sm:text-sm text-slate-900 truncate mt-1 group-hover:text-violet-700 transition-colors">
+                <div className="font-black text-xs sm:text-sm text-slate-900 truncate mt-1 group-hover:text-indigo-700 transition-colors">
                   {game.name}
                 </div>
                 <div className="text-[10px] text-slate-500 truncate">{game.sub}</div>
@@ -685,7 +685,7 @@ export const AboutUsPage: React.FC = () => {
         <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
             <div className="flex items-center gap-2 text-slate-900">
-              <Building2 size={18} className="text-violet-600" />
+              <Building2 size={18} className="text-indigo-600" />
               <div>
                 <h2 className="font-black text-sm tracking-tight">
                   Registered Headquarters &amp; Directory
@@ -702,7 +702,7 @@ export const AboutUsPage: React.FC = () => {
             {/* Address */}
             <div className="flex items-start justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
               <div className="flex items-start gap-2.5 min-w-0">
-                <MapPin size={16} className="text-violet-600 shrink-0 mt-0.5" />
+                <MapPin size={16} className="text-indigo-600 shrink-0 mt-0.5" />
                 <div className="min-w-0">
                   <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Physical Office Location</span>
                   <span className="font-bold text-slate-900 text-xs sm:text-sm block">{address}</span>
@@ -751,7 +751,7 @@ export const AboutUsPage: React.FC = () => {
             {/* Email */}
             <div className="flex items-start justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
               <div className="flex items-start gap-2.5 min-w-0">
-                <Mail size={16} className="text-violet-600 shrink-0 mt-0.5" />
+                <Mail size={16} className="text-indigo-600 shrink-0 mt-0.5" />
                 <div className="min-w-0">
                   <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Official Inquiries &amp; Support</span>
                   <span className="font-mono font-medium text-slate-900 text-xs truncate block">{email}</span>
@@ -769,7 +769,7 @@ export const AboutUsPage: React.FC = () => {
                 </button>
                 <a
                   href={`mailto:${email}`}
-                  className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-bold text-xs active:scale-95 transition-all inline-flex items-center gap-1 shadow-2xs"
+                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-xs active:scale-95 transition-all inline-flex items-center gap-1 shadow-2xs"
                 >
                   <span>Email</span>
                   <ArrowUpRight size={13} />
@@ -782,7 +782,7 @@ export const AboutUsPage: React.FC = () => {
         {/* 4. EXPANDABLE MOBILE FAQS */}
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/90 space-y-3">
           <h2 className="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <Sparkles size={16} className="text-violet-600" />
+            <Sparkles size={16} className="text-indigo-600" />
             Frequently Asked Questions
           </h2>
 
@@ -800,7 +800,7 @@ export const AboutUsPage: React.FC = () => {
                     className="w-full p-3 text-left font-bold text-xs text-slate-900 flex items-center justify-between gap-2 cursor-pointer transition-colors"
                   >
                     <span>{faq.q}</span>
-                    <ChevronDown size={15} className={`text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-violet-600' : ''}`} />
+                    <ChevronDown size={15} className={`text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-indigo-600' : ''}`} />
                   </button>
                   {isExpanded && (
                     <motion.div
@@ -825,10 +825,10 @@ export const AboutUsPage: React.FC = () => {
             className="p-3 bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl text-left flex items-center justify-between cursor-pointer transition-all active:scale-95 shadow-2xs group"
           >
             <div className="flex items-center gap-2 min-w-0">
-              <FileText size={15} className="text-violet-600 shrink-0" />
+              <FileText size={15} className="text-indigo-600 shrink-0" />
               <span className="font-bold text-xs text-slate-900 truncate">Terms of Service</span>
             </div>
-            <ChevronRight size={14} className="text-slate-400 group-hover:text-violet-600" />
+            <ChevronRight size={14} className="text-slate-400 group-hover:text-indigo-600" />
           </button>
 
           <button

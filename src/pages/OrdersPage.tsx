@@ -186,7 +186,7 @@ export const OrdersPage: React.FC = () => {
                   value={guestTrackingInput}
                   onChange={(e) => setGuestTrackingInput(e.target.value)}
                   placeholder="Enter GHN Order ID (e.g. GHN-4829)..."
-                  className="w-full bg-slate-50 border border-slate-300 focus:bg-white focus:border-violet-600 rounded-2xl px-4 py-3 text-xs text-slate-900 font-mono focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
+                  className="w-full bg-slate-50 border border-slate-300 focus:bg-white focus:border-slate-400 rounded-2xl px-4 py-3 text-xs text-slate-900 font-mono outline-none focus:outline-none focus:ring-0 transition-all shadow-inner"
                 />
                 <button
                   type="submit"
@@ -525,14 +525,14 @@ export const OrdersPage: React.FC = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Game, Order ID or Player UID..."
             aria-label="Search orders by game, order ID, or player ID"
-            className="h-12 w-full rounded-2xl border border-slate-200/80 bg-slate-50 pl-10 pr-12 text-sm font-medium text-slate-900 shadow-2xs transition-all placeholder:truncate placeholder:text-slate-400 focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/15"
+            className="h-12 w-full rounded-2xl border border-slate-200/80 bg-slate-50 pl-10 pr-12 text-sm font-medium text-slate-900 shadow-2xs transition-all placeholder:truncate placeholder:text-slate-400 focus:border-slate-400 focus:bg-white outline-none focus:outline-none focus:ring-0"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
               aria-label="Clear order search"
-              className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 outline-none focus:outline-none"
             >
               <X size={13} />
             </button>

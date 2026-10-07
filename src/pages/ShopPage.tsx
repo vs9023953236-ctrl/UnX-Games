@@ -213,13 +213,13 @@ export const ShopPage: React.FC = () => {
                 onChange={(e) => setShopSearch(e.target.value)}
                 placeholder="Search games, diamonds, vouchers..."
                 aria-label="Search games and products"
-                className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-11 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
+                className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-11 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:ring-0"
               />
               {shopSearch && (
                 <button
                   type="button"
                   onClick={() => setShopSearch('')}
-                  className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                  className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 outline-none focus:outline-none"
                   aria-label="Clear search"
                 >
                   <X size={14} />

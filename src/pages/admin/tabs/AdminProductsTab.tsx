@@ -73,6 +73,16 @@ export const AdminProductsTab: React.FC = () => {
     }
   };
 
+  const handleToggleStock = async (p: Product, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      const adminInfo = currentUser ? { uid: currentUser.uid, name: currentUser.name, email: currentUser.email } : undefined;
+      await toggleProductStock(p.id, undefined, adminInfo);
+    } catch {
+      // Handled
+    }
+  };
+
   const handleConfirmDelete = async () => {
     if (!productToDelete) return;
     try {
@@ -219,6 +229,19 @@ export const AdminProductsTab: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                  <button
+                    type="button"
+                    onClick={(e) => handleToggleStock(p, e)}
+                    className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer border ${
+                      p.inStock !== false
+                        ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
+                        : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
+                    }`}
+                    title={p.inStock !== false ? 'In Stock - Tap to mark Out of Stock' : 'Out of Stock - Tap to mark In Stock'}
+                  >
+                    {p.inStock !== false ? 'In Stock' : 'Out Stock'}
+                  </button>
+
                   <button
                     type="button"
                     onClick={(e) => handleToggleActive(p, e)}

@@ -122,7 +122,6 @@ const AdminPerformanceTab = safeTabLazy(() => import('./tabs/AdminPerformanceTab
 const AdminKycTab = safeTabLazy(() => import('./tabs/AdminKycTab'), 'AdminKycTab');
 const AdminTeamApplicationsTab = safeTabLazy(() => import('./tabs/AdminTeamApplicationsTab'), 'AdminTeamApplicationsTab');
 const AdminAiStudioTab = safeTabLazy(() => import('./tabs/AdminAiStudioTab'), 'AdminAiStudioTab');
-import { AdminAiOverseerModal } from '../../components/admin/AdminAiOverseerModal';
 import { AppLogo } from '../../components/common/AppLogo';
 import { ModalPortal } from '../../components/common/ModalPortal';
 import { AppLoadingScreen } from '../../components/common/AppLoadingScreen';
@@ -228,30 +227,34 @@ export const AdminDashboard: React.FC = () => {
   const { currentUser, isAdmin, loading, logout, users } = useAuth();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [showAdminProfileModal, setShowAdminProfileModal] = useState(false);
-  const [showAiOverseerModal, setShowAiOverseerModal] = useState(false);
   const [isTogglingStore, setIsTogglingStore] = useState(false);
 
   // Advanced Navigation Menu States
   const [menuSearchQuery, setMenuSearchQuery] = useState('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
 
-  // Global Keyboard shortcuts: Ctrl+K / Cmd+K for Search Hub, Ctrl+J / Cmd+J for AI Overseer
+  // Global Keyboard shortcuts: Ctrl+K / Cmd+K for Search Hub
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setMobileDrawerOpen(prev => !prev);
-      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-        setShowAiOverseerModal(prev => !prev);
       } else if (e.key === 'Escape') {
         if (mobileDrawerOpen) setMobileDrawerOpen(false);
-        if (showAiOverseerModal) setShowAiOverseerModal(false);
+      }
+    };
+    const handleNavEvent = (e: any) => {
+      if (e.detail) {
+        setAdminTab(e.detail);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileDrawerOpen, showAiOverseerModal]);
+    window.addEventListener('admin_navigate_tab', handleNavEvent);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('admin_navigate_tab', handleNavEvent);
+    };
+  }, [mobileDrawerOpen, setAdminTab]);
 
   const handleAiSyncState = async () => {
     try {
@@ -1608,52 +1611,18 @@ export const AdminDashboard: React.FC = () => {
         </main>
       </div>
 
-      {/* Admin Mobile Fixed Bottom Navigation Bar (Modern Native Floating Island with Center AI Brain) */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full h-[78px] sm:h-[84px] bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-4px_24px_rgba(15,23,42,0.1)] pb-[env(safe-area-inset-bottom,0px)] flex items-center">
+      {/* Admin Mobile Fixed Bottom Navigation Bar (Clean 5-Item Native Layout) */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full h-[70px] sm:h-[76px] bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-4px_24px_rgba(15,23,42,0.1)] pb-[env(safe-area-inset-bottom,0px)] flex items-center">
         <div className="w-full max-w-lg sm:max-w-2xl mx-auto px-1 sm:px-4 flex items-center justify-around h-full">
           {[
             { id: 'overview', label: 'Dashboard', icon: LayoutDashboard, active: adminTab === 'overview' },
             { id: 'orders', label: 'Orders', icon: ShoppingBag, active: adminTab === 'orders' || adminTab === 'order_detail', badge: actionableOrderCount },
-            { id: 'ai_studio', label: 'AI Brain', icon: Bot, isCenterAi: true, active: adminTab === 'ai_studio' || adminTab === 'control_center' || adminTab === 'system_health' },
+            { id: 'products', label: 'Products', icon: Package, active: adminTab === 'products' || adminTab === 'product_edit' || adminTab === 'product_new' },
             { id: 'payments', label: 'Payments', icon: CreditCard, active: adminTab === 'payments', badge: pendingPaymentsCount },
             { id: 'menu', label: 'Menu', icon: Menu, active: mobileDrawerOpen }
           ].map((item, idx) => {
             const Icon = item.icon;
             const isActive = item.active;
-
-            if (item.isCenterAi) {
-              return (
-                <button
-                  key={`admin-bottom-nav-ai-center-${idx}`}
-                  type="button"
-                  onClick={() => setShowAiOverseerModal(true)}
-                  className="relative -top-4 flex flex-col items-center justify-center group cursor-pointer active:scale-90 transition-all shrink-0 px-2"
-                  title="Open Supreme AI Overseer Voice & Text Console (Ctrl+J)"
-                  aria-label="AI Commander"
-                >
-                  <div className="relative flex items-center justify-center">
-                    {/* Animated Neon Cyber Halo Aura */}
-                    <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600 via-rose-500 to-amber-400 opacity-80 blur-xs group-hover:opacity-100 group-hover:blur-sm transition-all animate-pulse" />
-                    
-                    {/* Outer Glowing Shell */}
-                    <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-tr from-slate-950 via-indigo-950 to-slate-900 border-2 border-violet-400/80 shadow-2xl shadow-violet-950/80 flex items-center justify-center overflow-hidden">
-                      {/* Internal Cyber Grid Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-violet-500/20 via-transparent to-rose-500/20" />
-                      <Bot size={28} className="text-amber-300 relative z-10 group-hover:scale-110 transition-transform stroke-[2.2] animate-pulse" />
-                      
-                      {/* Active Live Sparkle Orb */}
-                      <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-ping" />
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-black tracking-tight leading-none bg-gradient-to-r from-violet-600 via-rose-600 to-indigo-600 bg-clip-text text-transparent">
-                      AI Commander
-                    </span>
-                  </div>
-                </button>
-              );
-            }
 
             return (
               <button
@@ -1678,14 +1647,14 @@ export const AdminDashboard: React.FC = () => {
                 {/* Icon Container with Refined Active Background Pill */}
                 <div className="relative flex items-center justify-center">
                   <div
-                    className={`px-3.5 py-1 rounded-2xl flex items-center justify-center transition-all duration-200 relative ${
+                    className={`px-3 py-1 rounded-2xl flex items-center justify-center transition-all duration-200 relative ${
                       isActive
                         ? 'bg-red-50 text-red-600 shadow-xs'
                         : 'text-slate-400 group-hover:text-slate-700'
                     }`}
                   >
                     <Icon
-                      size={24}
+                      size={22}
                       className={`transition-all duration-200 ${
                         isActive ? 'stroke-[2.5] text-red-600' : 'stroke-[1.9] text-slate-400 group-hover:text-slate-600'
                       }`}
@@ -1694,7 +1663,7 @@ export const AdminDashboard: React.FC = () => {
 
                   {/* Real-Time Notification & Pending Order Badge */}
                   {item.badge !== undefined && item.badge > 0 ? (
-                    <span className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1 bg-rose-500 text-white text-[11px] font-black rounded-full flex items-center justify-center shadow-xs border-2 border-white animate-in zoom-in duration-200">
+                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs border-2 border-white animate-in zoom-in duration-200">
                       {item.badge}
                     </span>
                   ) : null}
@@ -1702,7 +1671,7 @@ export const AdminDashboard: React.FC = () => {
 
                 {/* Label */}
                 <span
-                  className={`text-xs tracking-tight leading-none transition-all ${
+                  className={`text-[11px] tracking-tight leading-none transition-all ${
                     isActive
                       ? 'font-black text-red-700'
                       : 'font-semibold text-slate-400 group-hover:text-slate-600'
@@ -1715,13 +1684,6 @@ export const AdminDashboard: React.FC = () => {
           })}
         </div>
       </nav>
-
-      {/* Supreme AI Overseer Full Command Modal */}
-      <AdminAiOverseerModal
-        isOpen={showAiOverseerModal}
-        onClose={() => setShowAiOverseerModal(false)}
-        onSyncState={handleAiSyncState}
-      />
     </div>
   );
 };

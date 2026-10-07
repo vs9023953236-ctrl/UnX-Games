@@ -58,6 +58,7 @@ export interface AssistantRequest {
     walletBalance?: number;
     currentTab?: string;
   };
+  model?: string;
 }
 
 function cleanModelId(raw: string): string {
@@ -617,6 +618,7 @@ ${orderContextStr}`;
       messages: req.messages,
       temperature: 0.35,
       responseFormat: 'text',
+      modelOverride: req.model,
     });
 
     if (aiResult && aiResult.content && aiResult.content.trim()) {

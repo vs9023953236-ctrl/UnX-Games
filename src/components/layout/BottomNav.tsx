@@ -99,7 +99,7 @@ export const BottomNav: React.FC = () => {
               aria-current={isActive ? 'page' : undefined}
               aria-label={badgeCount ? `${item.label}, ${badgeCount} active orders` : item.label}
               className={`group relative flex min-h-[64px] flex-1 cursor-pointer flex-col items-center justify-center gap-1.5 px-1 py-1.5 transition-colors duration-100 ease-out touch-manipulation focus-visible:outline-none ${
-                isActive ? 'text-violet-700 font-black' : 'text-slate-500 hover:text-slate-800'
+                isActive ? 'text-indigo-600 font-black' : 'text-slate-500 hover:text-slate-800'
               }`}
               title={item.label}
             >
@@ -107,16 +107,16 @@ export const BottomNav: React.FC = () => {
               {isActive && (
                 <div
                   aria-hidden="true"
-                  className="absolute top-0 w-10 h-1 rounded-full bg-violet-600 sm:w-14 shadow-sm"
+                  className="absolute top-0 w-10 h-1 rounded-full bg-indigo-600 sm:w-14 shadow-sm"
                 />
               )}
 
               {/* Icon Container with Instant Hardware Tap Feedback */}
               <div className="relative flex items-center justify-center">
                 <div
-                  className={`relative flex h-11 w-14 items-center justify-center rounded-2xl active:scale-90 transition-transform duration-75 sm:w-16 transform-gpu ${
+                  className={`relative flex h-11 w-14 items-center justify-center rounded-2xl active:scale-95 transition-transform duration-100 ease-out sm:w-16 transform-gpu ${
                     isActive
-                      ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30'
+                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-600/25'
                       : 'text-slate-500 group-hover:text-slate-800 hover:bg-slate-100/70'
                   }`}
                 >

@@ -933,10 +933,10 @@ export const api = {
 
   // Unx AI Suite
   ai: {
-    assistantChat: (messages: Array<{ role: string; content: string; reasoning_details?: unknown }>, userContext?: any) =>
+    assistantChat: (messages: Array<{ role: string; content: string; reasoning_details?: unknown }>, userContext?: any, model?: string) =>
       fetchApi('/api/ai/assistant-chat', {
         method: 'POST',
-        body: JSON.stringify({ messages, userContext }),
+        body: JSON.stringify({ messages, userContext, model }),
       }),
     getAiConfig: () => fetchApi('/api/admin/ai-config'),
     updateAiConfig: (data: { apiKey?: string; model?: string; reasoningEnabled?: boolean }) =>
@@ -990,10 +990,62 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ messages }),
       }),
-    sendOverseerCommand: (data: { prompt: string; autoExecute?: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; targetModel?: string; modelOverride?: string }) =>
-      fetchApi('/api/admin/ai/command', {
+    sendOverseerCommand: (data: { prompt: string; autoExecute?: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; targetModel?: string; modelOverride?: string; requestId?: string }) =>
+      fetchApi('/api/ai/command', {
         method: 'POST',
         body: JSON.stringify(data),
+      }),
+    swarmChat: (data: { prompt: string; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; requestId?: string; targetModelId?: string; mode?: string }) =>
+      fetchApi('/api/ai/swarm-chat', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    getModels: () => fetchApi('/api/ai/models'),
+    checkModelHealth: (modelId: string) =>
+      fetchApi('/api/ai/check-model-health', {
+        method: 'POST',
+        body: JSON.stringify({ modelId }),
+      }),
+    toggleModel: (modelId: string, enabled: boolean) =>
+      fetchApi('/api/ai/toggle-model', {
+        method: 'POST',
+        body: JSON.stringify({ modelId, enabled }),
+      }),
+    getTerminalLogs: () => fetchApi('/api/ai/terminal-logs'),
+    clearTerminalLogs: () =>
+      fetchApi('/api/ai/clear-terminal-logs', {
+        method: 'POST',
+      }),
+    getActions: () => fetchApi('/api/ai/actions'),
+    executeAction: (actionType: string, input?: any, requestId?: string) =>
+      fetchApi('/api/ai/execute-action', {
+        method: 'POST',
+        body: JSON.stringify({ actionType, input, requestId }),
+      }),
+    // Admin AI Tool Layer
+    readFile: (path: string) => fetchApi(`/api/admin/ai/tools/file?path=${encodeURIComponent(path)}`),
+    searchFiles: (q: string, dir = '.') => fetchApi(`/api/admin/ai/tools/search-files?q=${encodeURIComponent(q)}&dir=${encodeURIComponent(dir)}`),
+    listDir: (path = '.') => fetchApi(`/api/admin/ai/tools/list-dir?path=${encodeURIComponent(path)}`),
+    writeFile: (data: { filePath: string; content: string; reason: string; requestId?: string }) =>
+      fetchApi('/api/admin/ai/tools/write-file', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    deleteFile: (filePath: string, confirmationToken?: string) =>
+      fetchApi('/api/admin/ai/tools/delete-file', {
+        method: 'POST',
+        body: JSON.stringify({ filePath, confirmationToken }),
+      }),
+    getDbOverview: () => fetchApi('/api/admin/ai/tools/database-overview'),
+    executeSafeSql: (query: string, confirmationToken?: string) =>
+      fetchApi('/api/admin/ai/tools/execute-safe-sql', {
+        method: 'POST',
+        body: JSON.stringify({ query, confirmationToken }),
+      }),
+    runTypeCheck: () => fetchApi('/api/admin/ai/tools/type-check'),
+    runBuild: () =>
+      fetchApi('/api/admin/ai/tools/run-build', {
+        method: 'POST',
       }),
     getSwarmStatus: () => fetchApi('/api/admin/ai/swarm/status'),
     collaborateSwarm: (data: { task: string; domain?: string; enableSecurityCrossCheck?: boolean }) =>

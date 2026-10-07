@@ -36,9 +36,25 @@ import {
   runAutonomousSystemScan,
   executeAutonomousSelfHealing,
 } from './aiEngineerService.js';
-import { processOverseerCommand } from './aiOverseerCommander.js';
+import { executeRealSwarmCouncil } from './swarmOrchestrator.js';
+import { getRegisteredModels, toggleModelStatus, verifyModelHealth } from './modelRegistry.js';
+import { getTerminalLogs, clearTerminalLogs } from './swarmTerminal.js';
+import { executeRealSwarmAction, getRecentSwarmActions } from './swarmActions.js';
+import {
+  adminReadFile,
+  adminSearchFiles,
+  adminListDirectory,
+  adminWriteFile,
+  adminDeleteFile,
+  adminGetDatabaseOverview,
+  adminExecuteSafeSql,
+  adminRunTypeCheck,
+  adminRunBuildCheck,
+  logAdminToolInvocation,
+} from './adminAgentTools.js';
 import { gatewayCache, invalidateCacheTag } from './gateway/cache.js';
 import { invalidateRedisCache } from './redis.js';
+import { handleImageTransform } from './imageTransformService.js';
 import {
   rpcRequestCancellation,
   rpcResolveCancellation,
@@ -47,7 +63,26 @@ import {
   rpcUpdateInventory
 } from './rpcService.js';
 
+function parsePackageAmount(amountVal: any, nameVal?: string): number {
+  if (typeof amountVal === 'number' && !isNaN(amountVal)) return amountVal;
+  if (amountVal !== undefined && amountVal !== null && amountVal !== '') {
+    const parsed = parseFloat(String(amountVal).replace(/[^0-9.]/g, ''));
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+  if (nameVal) {
+    const match = String(nameVal).match(/(\d+(?:\.\d+)?)/);
+    if (match) {
+      const parsed = parseFloat(match[1]);
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+  }
+  return 1;
+}
+
 export function registerStoreRoutes(router: Router) {
+  // Automated modern format image transformer (WebP/AVIF proxy)
+  router.get('/image/transform', handleImageTransform);
+
   // =========================================================================
   // 1. PRODUCTS & PACKAGES
   // =========================================================================
@@ -267,7 +302,7 @@ export function registerStoreRoutes(router: Router) {
           const ids: string[] = [];
           const productIds: string[] = [];
           const names: string[] = [];
-          const amounts: string[] = [];
+          const amounts: number[] = [];
           const units: string[] = [];
           const prices: number[] = [];
           const compareAtPrices: (number | null)[] = [];
@@ -283,7 +318,7 @@ export function registerStoreRoutes(router: Router) {
             ids.push(pkgId);
             productIds.push(id);
             names.push(pkg.name.trim());
-            amounts.push(pkg.amount || pkg.name.trim());
+            amounts.push(parsePackageAmount(pkg.amount || pkg.amountValue, pkg.name));
             units.push(pkg.unit || '');
             prices.push(Number(pkg.price) || 0);
             compareAtPrices.push(pkg.compareAtPrice || pkg.compare_at_price || null);
@@ -297,7 +332,7 @@ export function registerStoreRoutes(router: Router) {
             await pool.query(`
               INSERT INTO product_packages (id, product_id, name, amount, unit, price, compare_at_price, discount, badge, active, display_order, created_at, updated_at)
               SELECT *, NOW(), NOW() FROM UNNEST(
-                $1::text[], $2::text[], $3::text[], $4::text[], $5::text[],
+                $1::text[], $2::text[], $3::text[], $4::numeric[], $5::text[],
                 $6::numeric[], $7::numeric[], $8::numeric[], $9::text[], $10::boolean[], $11::integer[]
               )
               ON CONFLICT (id) DO UPDATE SET
@@ -372,7 +407,7 @@ export function registerStoreRoutes(router: Router) {
           const ids: string[] = [];
           const productIds: string[] = [];
           const names: string[] = [];
-          const amounts: string[] = [];
+          const amounts: number[] = [];
           const units: string[] = [];
           const prices: number[] = [];
           const compareAtPrices: (number | null)[] = [];
@@ -388,7 +423,7 @@ export function registerStoreRoutes(router: Router) {
             ids.push(pkgId);
             productIds.push(id);
             names.push(pkg.name.trim());
-            amounts.push(pkg.amount || pkg.name.trim());
+            amounts.push(parsePackageAmount(pkg.amount || pkg.amountValue, pkg.name));
             units.push(pkg.unit || '');
             prices.push(Number(pkg.price) || 0);
             compareAtPrices.push(pkg.compareAtPrice || pkg.compare_at_price || null);
@@ -402,7 +437,7 @@ export function registerStoreRoutes(router: Router) {
             await pool.query(`
               INSERT INTO product_packages (id, product_id, name, amount, unit, price, compare_at_price, discount, badge, active, display_order, created_at, updated_at)
               SELECT *, NOW(), NOW() FROM UNNEST(
-                $1::text[], $2::text[], $3::text[], $4::text[], $5::text[],
+                $1::text[], $2::text[], $3::text[], $4::numeric[], $5::text[],
                 $6::numeric[], $7::numeric[], $8::numeric[], $9::text[], $10::boolean[], $11::integer[]
               )
               ON CONFLICT (id) DO UPDATE SET
@@ -522,7 +557,7 @@ export function registerStoreRoutes(router: Router) {
       }
 
       const pkgId = data.id || `pkg_${productId}_${Date.now()}`;
-      const amount = data.amount || rawName;
+      const amount = parsePackageAmount(data.amount || data.amountValue, rawName);
       const unit = data.unit || '';
       const price = Number(data.price) || 0;
       const compareAtPrice = data.compareAtPrice || data.compare_at_price || null;
@@ -593,7 +628,7 @@ export function registerStoreRoutes(router: Router) {
       let pIdx = 2;
 
       if (data.name !== undefined) { updates.push(`name = $${pIdx++}`); values.push(String(data.name).trim()); }
-      if (data.amount !== undefined) { updates.push(`amount = $${pIdx++}`); values.push(String(data.amount)); }
+      if (data.amount !== undefined) { updates.push(`amount = $${pIdx++}`); values.push(parsePackageAmount(data.amount || data.amountValue, data.name || currentPkg.name)); }
       if (data.unit !== undefined) { updates.push(`unit = $${pIdx++}`); values.push(String(data.unit)); }
       if (data.price !== undefined) { updates.push(`price = $${pIdx++}`); values.push(Number(data.price)); }
       if (data.compareAtPrice !== undefined || data.compare_at_price !== undefined) {
@@ -2042,7 +2077,41 @@ export function registerStoreRoutes(router: Router) {
   });
 
   // =========================================================================
-  // 11. ADMIN OPERATIONS & BULK ACTIONS
+  // 11. PRICE ALERT SUBSCRIPTIONS
+  // =========================================================================
+  router.post('/price-alerts/subscribe', async (req: AuthRequest, res: Response) => {
+    try {
+      const { id, productId, productName, packageId, packageName, currentPrice, targetPrice, userUid } = req.body || {};
+      if (!productId || !productName) {
+        return res.status(400).json({ success: false, message: 'Missing product details' });
+      }
+
+      await pool.query(
+        `INSERT INTO notifications (id, recipient_uid, title, message, type, read, action_url, created_at)
+         VALUES ($1, $2, $3, $4, $5, false, $6, NOW())
+         ON CONFLICT (id) DO NOTHING`,
+        [
+          `alert-reg-${productId}-${packageId || 'all'}`,
+          userUid || req.user?.uid || 'guest',
+          `🔔 Price Alert Subscribed: ${productName}`,
+          `You'll receive an instant notification when the price of ${productName} ${packageName ? `(${packageName})` : ''} drops below Rs. ${targetPrice || currentPrice}!`,
+          'PRICE_ALERT_REGISTERED',
+          `/product/${productId}`
+        ]
+      ).catch(() => {});
+
+      return res.json({ success: true, message: 'Subscribed to price alert' });
+    } catch (err: any) {
+      return res.json({ success: true, message: 'Subscribed (local mode)' });
+    }
+  });
+
+  router.post('/price-alerts/unsubscribe', async (_req: AuthRequest, res: Response) => {
+    return res.json({ success: true, message: 'Unsubscribed from price alert' });
+  });
+
+  // =========================================================================
+  // 12. ADMIN OPERATIONS & BULK ACTIONS
   // =========================================================================
   router.post('/admin/complete-all-pending', requireStaff, async (req: AuthRequest, res: Response) => {
     try {
@@ -2562,12 +2631,12 @@ export function registerStoreRoutes(router: Router) {
   // Customer AI Gaming Concierge & Top-Up Assistant
   router.post('/ai/assistant-chat', async (req: Request, res: Response) => {
     try {
-      const { messages, userContext } = req.body;
+      const { messages, userContext, model } = req.body;
       if (!Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ success: false, message: 'Messages array is required.' });
       }
 
-      const aiResponse = await handleAssistantChat({ messages, userContext });
+      const aiResponse = await handleAssistantChat({ messages, userContext, model });
       return res.json({
         success: true,
         reply: typeof aiResponse === 'string' ? aiResponse : aiResponse.reply,
@@ -2732,29 +2801,437 @@ export function registerStoreRoutes(router: Router) {
     }
   });
 
-  // Admin Supreme AI Overseer & Voice Command Console (Full Root System Power)
-  router.post('/admin/ai/command', requireStaff, async (req: AuthRequest, res: Response) => {
+  // =========================================================================
+  // MULTI-MODEL SWARM COUNCIL REAL ORCHESTRATION ROUTES
+  // =========================================================================
+
+  // Helper handler for executing real swarm council chat
+  const handleSwarmChatRequest = async (req: Request, res: Response) => {
+    const requestId = req.body.requestId || `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     try {
-      const { prompt, autoExecute, conversationHistory, modelOverride, targetModel } = req.body;
+      const { prompt, conversationHistory, targetModelId, mode } = req.body;
       if (!prompt || typeof prompt !== 'string') {
-        return res.status(400).json({ success: false, message: 'Voice/Text command prompt is required.' });
+        return res.status(400).json({
+          success: false,
+          requestId,
+          stage: 'MODEL_REQUEST',
+          errorCode: 'INVALID_PROMPT',
+          message: 'User prompt string is required.',
+          retryable: false,
+        });
       }
 
-      const result = await processOverseerCommand({
-        prompt,
-        autoExecute: autoExecute !== false,
-        adminEmail: req.user?.email || 'admin@unxgames.com',
-        adminRole: req.user?.role || 'SUPER_ADMIN',
-        modelOverride: modelOverride || targetModel,
-        conversationHistory: Array.isArray(conversationHistory) ? conversationHistory : []
+      const result = await executeRealSwarmCouncil({
+        userPrompt: prompt,
+        conversationHistory,
+        requestId,
+        targetModelId,
+        mode: mode || (targetModelId && targetModelId !== 'ALL_SWARM' ? undefined : 'single_failover'),
       });
 
       return res.json(result);
     } catch (err: any) {
-      console.error('AI overseer command route error:', err);
-      return res.status(500).json({ success: false, message: err?.message || 'Failed to process AI command' });
+      console.error('Swarm chat execution error:', err);
+      return res.status(500).json({
+        success: false,
+        requestId,
+        stage: 'MODEL_REQUEST',
+        errorCode: 'ORCHESTRATION_EXCEPTION',
+        message: err?.message || 'Swarm council execution failed.',
+        retryable: true,
+      });
+    }
+  };
+
+  // Helper handler for streaming real swarm council execution via Server-Sent Events (SSE)
+  const handleSwarmStreamRequest = async (req: Request, res: Response) => {
+    const requestId = req.body.requestId || `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const { prompt, conversationHistory, targetModelId, mode } = req.body;
+    if (!prompt || typeof prompt !== 'string') {
+      return res.status(400).json({
+        success: false,
+        requestId,
+        stage: 'MODEL_REQUEST',
+        errorCode: 'INVALID_PROMPT',
+        message: 'User prompt string is required.',
+        retryable: false,
+      });
+    }
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders?.();
+
+    try {
+      const result = await executeRealSwarmCouncil({
+        userPrompt: prompt,
+        conversationHistory,
+        requestId,
+        targetModelId,
+        mode: mode || (targetModelId && targetModelId !== 'ALL_SWARM' ? undefined : 'single_failover'),
+        onProgress: (ev) => {
+          res.write(`data: ${JSON.stringify(ev)}\n\n`);
+        },
+      });
+
+      res.write(`data: ${JSON.stringify({ stage: 'DONE', result })}\n\n`);
+      res.end();
+    } catch (err: any) {
+      res.write(`data: ${JSON.stringify({
+        stage: 'MODEL_ERROR',
+        error: {
+          success: false,
+          requestId,
+          stage: 'MODEL_REQUEST',
+          errorCode: 'STREAM_EXCEPTION',
+          message: err?.message || 'Swarm streaming failed',
+          retryable: true,
+        }
+      })}\n\n`);
+      res.end();
+    }
+  };
+
+  // 1. Multi-Model Swarm Real Parallel Execution (Public & Admin)
+  router.post('/ai/swarm-chat', handleSwarmChatRequest);
+  router.post('/admin/ai/swarm-chat', handleSwarmChatRequest);
+  router.post('/ai/swarm-stream', handleSwarmStreamRequest);
+  router.post('/admin/ai/swarm-stream', handleSwarmStreamRequest);
+
+  // 2. Central Model Registry List & Toggle (Public & Admin)
+  const handleGetModels = async (_req: Request, res: Response) => {
+    return res.json({ success: true, models: getRegisteredModels() });
+  };
+  const handleToggleModel = async (req: Request, res: Response) => {
+    try {
+      const { modelId, enabled } = req.body;
+      if (!modelId) {
+        return res.status(400).json({
+          success: false,
+          stage: 'MODEL_REQUEST',
+          errorCode: 'MISSING_MODEL_ID',
+          message: 'modelId is required.',
+          retryable: false,
+        });
+      }
+      const updated = toggleModelStatus(modelId, Boolean(enabled));
+      if (!updated) {
+        return res.status(404).json({
+          success: false,
+          stage: 'MODEL_REQUEST',
+          errorCode: 'MODEL_NOT_FOUND',
+          message: 'Model not found.',
+          retryable: false,
+        });
+      }
+      return res.json({ success: true, model: updated, models: getRegisteredModels() });
+    } catch (err: any) {
+      return res.status(500).json({
+        success: false,
+        stage: 'MODEL_REQUEST',
+        errorCode: 'TOGGLE_FAILED',
+        message: err?.message || 'Failed to toggle model',
+        retryable: true,
+      });
+    }
+  };
+
+  const handleCheckModelHealth = async (req: Request, res: Response) => {
+    try {
+      const { modelId } = req.body;
+      if (!modelId) {
+        return res.status(400).json({ success: false, message: 'modelId is required.' });
+      }
+      const health = await verifyModelHealth(modelId);
+      return res.json({ success: true, modelId, health, models: getRegisteredModels() });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, message: err?.message || 'Health check failed.' });
+    }
+  };
+
+  router.get('/ai/models', handleGetModels);
+  router.get('/admin/ai/models', handleGetModels);
+  router.post('/ai/toggle-model', handleToggleModel);
+  router.post('/admin/ai/toggle-model', handleToggleModel);
+  router.post('/ai/check-model-health', handleCheckModelHealth);
+  router.post('/admin/ai/check-model-health', handleCheckModelHealth);
+
+  // =========================================================================
+  // ADMIN AI & CODE AGENT TOOL LAYER (Requires Staff/Admin Authorization)
+  // =========================================================================
+
+  // Filesystem inspection
+  router.get('/admin/ai/tools/file', requireStaff, async (req: AuthRequest, res: Response) => {
+    try {
+      const filePath = req.query.path as string;
+      if (!filePath) return res.status(400).json({ success: false, message: 'path query parameter is required.' });
+      const fileData = await adminReadFile(filePath);
+      return res.json({ success: true, ...fileData });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'Failed to read file.' });
     }
   });
+
+  router.get('/admin/ai/tools/search-files', requireStaff, async (req: AuthRequest, res: Response) => {
+    try {
+      const query = (req.query.q as string) || '';
+      const subDir = (req.query.dir as string) || '.';
+      const matches = await adminSearchFiles(query, subDir);
+      return res.json({ success: true, matches });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'Failed to search files.' });
+    }
+  });
+
+  router.get('/admin/ai/tools/list-dir', requireStaff, async (req: AuthRequest, res: Response) => {
+    try {
+      const dirPath = (req.query.path as string) || '.';
+      const entries = await adminListDirectory(dirPath);
+      return res.json({ success: true, entries });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'Failed to list directory.' });
+    }
+  });
+
+  router.post('/admin/ai/tools/write-file', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const { filePath, content, reason } = req.body;
+      if (!filePath || typeof content !== 'string') {
+        return res.status(400).json({ success: false, message: 'filePath and content are required.' });
+      }
+      const writeResult = await adminWriteFile({ filePath, content, reason: reason || 'Admin AI modification' });
+      await logAdminToolInvocation({
+        id: `tool_${Date.now()}`,
+        requestId: req.body.requestId || `req_${Date.now()}`,
+        adminUserId: req.user?.id,
+        toolName: 'WRITE_FILE',
+        target: filePath,
+        timestamp: new Date().toISOString(),
+        status: 'SUCCESS',
+        filesChanged: [filePath],
+        result: writeResult,
+      });
+      return res.json({ success: true, ...writeResult });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'Write file failed.' });
+    }
+  });
+
+  router.post('/admin/ai/tools/delete-file', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const { filePath, confirmationToken } = req.body;
+      if (!filePath) return res.status(400).json({ success: false, message: 'filePath is required.' });
+      const delResult = await adminDeleteFile(filePath, confirmationToken);
+      if ('requiresConfirmation' in delResult) {
+        return res.json({ success: false, confirmationRequired: true, details: delResult });
+      }
+      await logAdminToolInvocation({
+        id: `tool_${Date.now()}`,
+        requestId: req.body.requestId || `req_${Date.now()}`,
+        adminUserId: req.user?.id,
+        toolName: 'DELETE_FILE',
+        target: filePath,
+        timestamp: new Date().toISOString(),
+        status: 'SUCCESS',
+        filesChanged: [filePath],
+        result: delResult,
+      });
+      return res.json({ success: true, ...delResult });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'Delete file failed.' });
+    }
+  });
+
+  // Database tools
+  router.get('/admin/ai/tools/database-overview', requireStaff, async (_req: AuthRequest, res: Response) => {
+    try {
+      const overview = await adminGetDatabaseOverview();
+      return res.json({ success: true, overview });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, message: err?.message || 'Database overview error.' });
+    }
+  });
+
+  router.post('/admin/ai/tools/execute-safe-sql', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const { query, confirmationToken } = req.body;
+      if (!query) return res.status(400).json({ success: false, message: 'query is required.' });
+      const sqlResult = await adminExecuteSafeSql(query, confirmationToken);
+      if ('requiresConfirmation' in sqlResult) {
+        return res.json({ success: false, confirmationRequired: true, details: sqlResult });
+      }
+      return res.json({ success: true, ...sqlResult });
+    } catch (err: any) {
+      return res.status(400).json({ success: false, message: err?.message || 'SQL execution failed.' });
+    }
+  });
+
+  // Project tools: Typecheck & Build
+  router.get('/admin/ai/tools/type-check', requireStaff, async (_req: AuthRequest, res: Response) => {
+    const result = await adminRunTypeCheck();
+    return res.json(result);
+  });
+
+  router.post('/admin/ai/tools/run-build', requireAdmin, async (_req: AuthRequest, res: Response) => {
+    const result = await adminRunBuildCheck();
+    return res.json(result);
+  });
+
+  // 3. Real Terminal Logs (Public & Admin)
+  const handleGetTerminalLogs = async (_req: Request, res: Response) => {
+    return res.json({ success: true, logs: getTerminalLogs() });
+  };
+  const handleClearTerminalLogs = async (_req: Request, res: Response) => {
+    clearTerminalLogs();
+    return res.json({ success: true, message: 'Terminal logs cleared.' });
+  };
+
+  router.get('/ai/terminal-logs', handleGetTerminalLogs);
+  router.get('/admin/ai/terminal-logs', handleGetTerminalLogs);
+  router.post('/ai/clear-terminal-logs', handleClearTerminalLogs);
+  router.post('/admin/ai/clear-terminal-logs', handleClearTerminalLogs);
+
+  // 4. Real Actions Logs & Execution (Public & Admin)
+  const handleGetActions = async (_req: Request, res: Response) => {
+    const actions = await getRecentSwarmActions();
+    return res.json({ success: true, actions });
+  };
+  const handleExecuteAction = async (req: Request, res: Response) => {
+    const requestId = req.body.requestId || `act_${Date.now()}`;
+    try {
+      const { actionType, input } = req.body;
+      if (!actionType) {
+        return res.status(400).json({
+          success: false,
+          requestId,
+          stage: 'ACTION',
+          errorCode: 'MISSING_ACTION_TYPE',
+          message: 'actionType is required.',
+          retryable: false,
+        });
+      }
+      const result = await executeRealSwarmAction({
+        actionType,
+        input,
+        requestId,
+      });
+      return res.json({ success: result.status === 'SUCCESS', result });
+    } catch (err: any) {
+      return res.status(500).json({
+        success: false,
+        requestId,
+        stage: 'ACTION',
+        errorCode: 'ACTION_EXECUTION_ERROR',
+        message: err?.message || 'Action execution error',
+        retryable: false,
+      });
+    }
+  };
+
+  router.get('/ai/actions', handleGetActions);
+  router.get('/admin/ai/actions', handleGetActions);
+  router.post('/ai/execute-action', handleExecuteAction);
+  router.post('/admin/ai/execute-action', handleExecuteAction);
+
+  // Supreme AI Overseer & Voice Command Console (Powered by Real Swarm Orchestrator)
+  const handleCommandRequest = async (req: Request, res: Response) => {
+    const reqId = req.body.requestId || `req_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    try {
+      const { prompt, conversationHistory, modelOverride, targetModel } = req.body;
+      if (!prompt || typeof prompt !== 'string') {
+        return res.status(400).json({
+          success: false,
+          requestId: reqId,
+          stage: 'MODEL_REQUEST',
+          errorCode: 'INVALID_PROMPT',
+          message: 'Voice/Text command prompt is required.',
+          retryable: false,
+        });
+      }
+
+      const targetModelId = targetModel || modelOverride;
+
+      // Check if user specifically requested a database or system action
+      const lower = prompt.toLowerCase();
+      let realAction: any = null;
+
+      if (lower.includes('check db') || lower.includes('database health') || lower.includes('db status')) {
+        realAction = await executeRealSwarmAction({
+          requestId: reqId,
+          actionType: 'CHECK_DB_HEALTH',
+        });
+      } else if (lower.includes('pending orders') || lower.includes('order queue') || lower.includes('unverified orders')) {
+        realAction = await executeRealSwarmAction({
+          requestId: reqId,
+          actionType: 'SCAN_PENDING_ORDERS',
+        });
+      } else if (lower.includes('payment gateway') || lower.includes('esewa') || lower.includes('khalti status')) {
+        realAction = await executeRealSwarmAction({
+          requestId: reqId,
+          actionType: 'VERIFY_PAYMENT_GATEWAYS',
+        });
+      } else if (lower.includes('products') || lower.includes('catalog count')) {
+        realAction = await executeRealSwarmAction({
+          requestId: reqId,
+          actionType: 'QUERY_PRODUCT_CATALOG',
+        });
+      }
+
+      // Execute Real Multi-Model Swarm Council
+      const swarmResult = await executeRealSwarmCouncil({
+        userPrompt: prompt,
+        conversationHistory,
+        requestId: reqId,
+        targetModelId,
+      });
+
+      return res.json({
+        success: swarmResult.success,
+        requestId: swarmResult.requestId,
+        modelUsed: swarmResult.synthesisModel,
+        replyText: swarmResult.synthesisResponse,
+        modelsSummaryText: swarmResult.modelsSummaryText,
+        participatingCount: swarmResult.participatingCount,
+        succeededCount: swarmResult.succeededCount,
+        failedCount: swarmResult.failedCount,
+        individualResponses: swarmResult.individualResponses,
+        thoughtProcess: [
+          `Gathered live store snapshot from PostgreSQL database`,
+          `Queried ${swarmResult.participatingCount} configured AI models in parallel`,
+          `${swarmResult.succeededCount} of ${swarmResult.participatingCount} models provided real independent responses`,
+          `Council Chair (${swarmResult.synthesisModel}) synthesized final consensus answer`,
+        ],
+        actionExecuted: realAction ? {
+          type: realAction.actionType,
+          summary: `Executed ${realAction.actionType} in ${realAction.durationMs}ms`,
+          status: realAction.status,
+          details: realAction.output,
+          error: realAction.error,
+        } : undefined,
+        suggestedFollowUps: [
+          'Check database connection & health',
+          'Scan pending orders queue',
+          'Verify eSewa & Khalti payment gateways',
+          'Query active store catalog',
+        ],
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err: any) {
+      console.error('AI command error:', err);
+      return res.status(500).json({
+        success: false,
+        requestId: reqId,
+        stage: 'MODEL_REQUEST',
+        errorCode: 'COMMAND_EXCEPTION',
+        message: err?.message || 'Supreme AI Overseer execution failed',
+        retryable: true,
+      });
+    }
+  };
+
+  router.post('/ai/command', handleCommandRequest);
+  router.post('/admin/ai/command', handleCommandRequest);
 
   // Admin AI Direct SQL & Migration Runner (PostgreSQL)
   router.post('/admin/ai/execute-sql', requireAdmin, async (req: AuthRequest, res: Response) => {

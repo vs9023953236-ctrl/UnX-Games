@@ -268,7 +268,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ hideLayo
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min 6 chars"
-                  className="w-full pl-10 pr-10 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-transparent text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all outline-none"
+                  className="w-full pl-10 pr-10 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-slate-400 focus:ring-0 transition-all outline-none"
                 />
                 <button
                   type="button"
@@ -285,7 +285,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ hideLayo
             <div className="flex flex-col gap-0.5">
               <label className="text-xs sm:text-sm font-bold text-slate-700 ml-1 mb-0.5 truncate">Confirm</label>
               <div className="relative flex items-center group">
-                <div className="absolute left-3.5 text-slate-400 group-focus-within:text-violet-600 pointer-events-none transition-colors">
+                <div className="absolute left-3.5 text-slate-400 group-focus-within:text-slate-700 pointer-events-none transition-colors">
                   <Lock size={15} />
                 </div>
                 <input
@@ -294,7 +294,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ hideLayo
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter"
-                  className="w-full pl-10 pr-10 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-transparent text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all outline-none"
+                  className="w-full pl-10 pr-10 py-3.5 min-h-[48px] rounded-[20px] bg-slate-100/60 hover:bg-slate-100 focus:bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-bold focus:border-slate-400 focus:ring-0 transition-all outline-none"
                 />
                 <button
                   type="button"
@@ -502,7 +502,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ hideLayo
                   if (errorMessage) setErrorMessage(null);
                 }}
                 placeholder="you@email.com"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-medium placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:bg-white focus:ring-0"
                 autoFocus
               />
             </div>

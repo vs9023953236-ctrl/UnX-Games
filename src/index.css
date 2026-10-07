@@ -312,6 +312,15 @@ body,
 }
 
 /* High Performance 360-degree Rotating Loader Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes spin-glow {
   0% {
     transform: rotate(0deg);
@@ -321,13 +330,21 @@ body,
   }
 }
 
-@keyframes spin-reverse {
-  0% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+.animate-spin {
+  animation: spin 0.9s linear infinite !important;
+  transform-origin: center center;
+}
+
+.spinner-rotate {
+  animation: spin 0.85s linear infinite !important;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.spinner-rotate-reverse {
+  animation: spin 1.2s linear infinite !important;
+  will-change: transform;
+  transform-origin: center center;
 }
 
 .animate-spin-glow {
@@ -343,9 +360,9 @@ body,
 }
 
 .animate-spin-reverse {
-  animation: spin-reverse 2s linear infinite !important;
+  animation: spin 1.2s linear infinite !important;
   will-change: transform;
-  transform-origin: center;
+  transform-origin: center center;
 }
 
 /* 120 FPS ProMotion & High-Refresh Gaming Engine Optimization (8.33ms Render Budget) */
@@ -566,10 +583,18 @@ main, .animate-live-ticker, header, nav {
   content: '';
 }
 
-/* Keyboard navigation is visible without changing the visual language of the app. */
-:where(a, button, input, select, textarea):focus-visible {
-  outline: 3px solid rgba(124, 58, 237, 0.5);
-  outline-offset: 3px;
+/* Clean focus states without intrusive rectangular box outlines on text inputs */
+:where(a, button, select):focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.35);
+  outline-offset: 2px;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .app-skip-link {
@@ -667,6 +692,45 @@ main, .animate-live-ticker, header, nav {
   padding-bottom: env(safe-area-inset-bottom, 0px);
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ========================================================================= */
+/* ADVANCED NATIVE SPINNER & HARDWARE-ACCELERATED CLOCKWISE ROTATIONS       */
+/* ========================================================================= */
+@keyframes native-spin-cw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes native-spin-cw-smooth {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinner-neon-pulse {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.spinner-rotate,
+.animate-spin-forward {
+  animation: native-spin-cw-smooth 0.85s linear infinite !important;
+  transform-origin: center center !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.spinner-rotate-slow {
+  animation: native-spin-cw-smooth 1.4s linear infinite !important;
+  transform-origin: center center !important;
+  will-change: transform !important;
+}
+
+.spinner-rotate-fast {
+  animation: native-spin-cw-smooth 0.65s linear infinite !important;
+  transform-origin: center center !important;
+  will-change: transform !important;
 }
 
 .pt-safe {

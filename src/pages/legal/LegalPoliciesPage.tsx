@@ -50,7 +50,7 @@ const POLICY_TABS: PolicyTab[] = [
   { id: 'kyc', label: 'KYC & AML', icon: ShieldCheck, color: 'text-emerald-600', badge: '🇳🇵 Legal' },
   { id: 'delivery', label: 'Delivery', icon: Truck, color: 'text-sky-600', badge: '5-15 Mins' },
   { id: 'refund', label: 'Refund', icon: RotateCcw, color: 'text-rose-600', badge: '100% Safe' },
-  { id: 'payment', label: 'Payment', icon: CreditCard, color: 'text-purple-600', badge: 'eSewa & Khalti' },
+  { id: 'payment', label: 'Payment', icon: CreditCard, color: 'text-sky-600', badge: 'eSewa & Khalti' },
   { id: 'terms', label: 'Terms', icon: FileText, color: 'text-indigo-600' },
   { id: 'privacy', label: 'Privacy', icon: Lock, color: 'text-emerald-600', badge: 'SSL Safe' },
   { id: 'security', label: 'Security', icon: ShieldCheck, color: 'text-amber-600' },
@@ -202,8 +202,8 @@ export const LegalPoliciesPage: React.FC<LegalPoliciesPageProps> = ({
       <main className="w-full max-w-7xl mx-auto px-2 sm:px-2 pt-1 sm:pt-2 pb-2 sm:pb-2 space-y-2 sm:space-y-2 flex-1">
         {/* ================= BUYER PROTECTION SUMMARY CARD ================= */}
         <div className="bg-white rounded-3xl border border-slate-200/90 p-3.5 sm:p-4 shadow-sm space-y-3 relative overflow-hidden">
-          {/* Purple top accent line */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400" />
+          {/* Top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-400" />
 
           {/* Header Row */}
           <div className="flex items-center justify-between pt-1">
@@ -464,7 +464,7 @@ export const LegalPoliciesPage: React.FC<LegalPoliciesPageProps> = ({
               {/* Header */}
               <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 shadow-2xs">
                     <CreditCard size={17} />
                   </div>
                   <div>
@@ -476,7 +476,7 @@ export const LegalPoliciesPage: React.FC<LegalPoliciesPageProps> = ({
                     </p>
                   </div>
                 </div>
-                <span className="text-[10px] font-black bg-purple-50 text-purple-700 border border-purple-200 px-2.5 py-0.5 rounded-full shrink-0">
+                <span className="text-[10px] font-black bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-full shrink-0">
                   💳 eSewa &amp; Khalti
                 </span>
               </div>
@@ -523,18 +523,18 @@ export const LegalPoliciesPage: React.FC<LegalPoliciesPageProps> = ({
                   </div>
 
                   {/* Khalti */}
-                  <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 space-y-2">
+                  <div className="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-100 space-y-2">
                     <div className="flex items-center justify-between">
-                      <strong className="text-purple-900 font-black text-xs flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-purple-500" />
+                      <strong className="text-sky-900 font-black text-xs flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-sky-500" />
                         <span>Khalti Digital Wallet</span>
                       </strong>
-                      <span className="text-[9px] font-black bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded-full">
+                      <span className="text-[9px] font-black bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded-full">
                         Instant
                       </span>
                     </div>
 
-                    <div className="space-y-1 bg-white/90 p-2.5 rounded-xl border border-purple-100/80">
+                    <div className="space-y-1 bg-white/90 p-2.5 rounded-xl border border-sky-100/80">
                       <div className="flex justify-between items-center text-[10px] text-slate-500">
                         <span>Merchant Name:</span>
                         <span className="font-bold text-slate-900">
@@ -546,7 +546,7 @@ export const LegalPoliciesPage: React.FC<LegalPoliciesPageProps> = ({
                         <button
                           type="button"
                           onClick={() => handleCopyText(paymentSettings?.khaltiId || '9768914027', 'khalti')}
-                          className="font-mono font-bold text-purple-700 flex items-center gap-1 hover:underline cursor-pointer"
+                          className="font-mono font-bold text-sky-700 flex items-center gap-1 hover:underline cursor-pointer"
                         >
                           <span>{paymentSettings?.khaltiId || '9768914027'}</span>
                           {copiedKhalti ? <Check size={11} /> : <Copy size={11} />}

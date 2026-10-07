@@ -331,7 +331,7 @@ export const AdminDbInspectorTab: React.FC = () => {
               value={aiQuery}
               onChange={(e) => setAiQuery(e.target.value)}
               placeholder="e.g., 'Analyze order status breakdown and suggest optimizations' or 'Check top revenue packages'..."
-              className="w-full px-4 py-3 rounded-2xl bg-slate-950/80 border border-indigo-500/40 text-xs font-medium text-white placeholder-slate-400 focus:outline-hidden focus:border-violet-400 focus:ring-2 focus:ring-violet-500/30 transition-all shadow-inner"
+              className="w-full px-4 py-3 rounded-2xl bg-slate-950/80 border border-slate-700 text-xs font-medium text-white placeholder-slate-400 outline-none focus:outline-none focus:border-slate-500 transition-all shadow-inner"
             />
             <Zap size={15} className="absolute right-3.5 top-3.5 text-indigo-400 pointer-events-none" />
           </div>

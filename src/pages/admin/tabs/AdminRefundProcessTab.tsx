@@ -174,7 +174,7 @@ export const AdminRefundProcessTab: React.FC = () => {
             <select
               value={refundStatusInput}
               onChange={(e) => setRefundStatusInput(e.target.value as any)}
-              className="w-full h-11 px-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none transition-all cursor-pointer"
+              className="w-full h-11 px-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none transition-all cursor-pointer"
               required
             >
               <option value="refund_pending">⏳ refund_pending (Under Review / Queued)</option>
@@ -195,7 +195,7 @@ export const AdminRefundProcessTab: React.FC = () => {
                 required
                 min={0}
                 max={Math.max(order.amount, 100000)}
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none"
                 value={refundAmountInput}
                 onChange={(e) => setRefundAmountInput(Number(e.target.value))}
               />
@@ -210,7 +210,7 @@ export const AdminRefundProcessTab: React.FC = () => {
                 type="text"
                 required
                 placeholder="eSewa, Khalti, or Gamer Wallet"
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none"
                 value={refundMethodInput}
                 onChange={(e) => setRefundMethodInput(e.target.value)}
               />
@@ -225,7 +225,7 @@ export const AdminRefundProcessTab: React.FC = () => {
                 type="text"
                 required
                 placeholder="e.g. Wallet mobile number or ID"
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none"
                 value={refundAccountNumberInput}
                 onChange={(e) => setRefundAccountNumberInput(e.target.value)}
               />
@@ -239,7 +239,7 @@ export const AdminRefundProcessTab: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g. Full name on payment account"
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none"
                 value={refundAccountNameInput}
                 onChange={(e) => setRefundAccountNameInput(e.target.value)}
               />
@@ -255,7 +255,7 @@ export const AdminRefundProcessTab: React.FC = () => {
               type="text"
               placeholder="e.g. eSewa/Khalti wallet transfer reference code"
               required={refundStatusInput === 'refunded'}
-              className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold uppercase tracking-wider text-slate-800 focus:bg-white focus:border-violet-600 focus:outline-none placeholder:normal-case placeholder:font-sans placeholder:font-normal"
+              className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold uppercase tracking-wider text-slate-800 focus:bg-white focus:border-slate-400 focus:outline-none placeholder:normal-case placeholder:font-sans placeholder:font-normal"
               value={refundReferenceInput}
               onChange={(e) => setRefundReferenceInput(e.target.value)}
             />
@@ -269,7 +269,7 @@ export const AdminRefundProcessTab: React.FC = () => {
             <input
               type="url"
               placeholder="e.g. link to screenshot image or receipt PDF"
-              className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-700 focus:bg-white focus:border-violet-600 focus:outline-none"
+              className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-700 focus:bg-white focus:border-slate-400 focus:outline-none"
               value={refundProofUrlInput}
               onChange={(e) => setRefundProofUrlInput(e.target.value)}
             />
